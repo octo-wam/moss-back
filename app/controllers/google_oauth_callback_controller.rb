@@ -3,6 +3,8 @@ require 'jwt'
 class GoogleOauthCallbackController < ApplicationController
   def callback
     response = request.env['omniauth.auth']
+    hd = response['extra']['raw_info']['hd']
+    render text: 'You must be part of Octo technology' unless hd == 'octo.com'
     payload = {
       :email => response['info']['email'],
       :exp => response['credentials']['expires_at'],
