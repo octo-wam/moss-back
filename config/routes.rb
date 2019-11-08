@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     namespace :v1, defaults: { format: :json } do
       resources :questions, only: %i[index] do
         member do
-          resources :votes, only: %i[create]
+          resources :votes, only: %i[index create]
         end
       end
 
