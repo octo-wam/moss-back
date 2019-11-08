@@ -3,7 +3,11 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1, defaults: { format: :json } do
-      resources :questions, only: %i[index]
+      resources :questions, only: %i[index] do
+        member do
+          resources :votes, only: %i[create]
+        end
+      end
 
       match '*path', to: 'api#not_found', via: :all
     end
