@@ -1,10 +1,17 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'jwt'
 
 RSpec.describe Api::V1::QuestionsController, type: :controller do
   describe 'GET #index' do
-    before { get :index, format: :json }
+    let(:token) {
+      JWT.encode({}, ENV['SECRET_KEY_BASE'], 'HS256')
+    }
+    before {
+      request.headers['Authorization'] = "Bearer #{token}"
+      get :index, format: :json
+    }
 
     it('returns http success') { expect(response).to have_http_status(:success) }
     it('retunrs an array with one question') do
