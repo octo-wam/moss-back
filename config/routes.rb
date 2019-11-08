@@ -9,5 +9,7 @@ Rails.application.routes.draw do
     end
   end
 
+  get '/auth/google_oauth2/callback', to: 'google_oauth_callback#callback'
+
   match '*path', to: 'application#not_found', via: :all
 end
