@@ -1,24 +1,11 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Installing
 
-Things you may want to cover:
+You'll need ruby-2.6.5. You have to install bundler (`gem install bundler`) and install dependencies (`bundle install`).
 
-* Ruby version
+## Starting server
 
-* System dependencies
+You can start server with the following command:
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+`bin/rails server`
