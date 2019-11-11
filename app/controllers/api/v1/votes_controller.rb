@@ -10,7 +10,7 @@ module Api
       def create
         answer = Answer.find(params[:answerId])
         vote = Vote.create! answer: answer, user_id: current_user['sub'], user_name: current_user['username'] 
-        render body: {'id' => vote.id}.to_json, location: vote.id, status: :created
+        render json: {'id' => vote.id}, location: vote.id, status: :created
       end
     end
   end
