@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       resources :questions, only: %i[index] do
         member do
           resources :votes, only: %i[index create]
+          put 'votes', to: 'votes#update'
         end
       end
 
