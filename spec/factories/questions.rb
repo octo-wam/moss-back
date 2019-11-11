@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :question do
-    title { "MyString" }
-    description { "MyText" }
-    ending_date { "2019-11-08 15:59:40" }
+    title { Faker::Lorem.question }
+    description { Faker::Lorem.paragraph }
+    ending_date { 1.week.from_now }
   end
 end

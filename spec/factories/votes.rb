@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :vote do
     association :answer
-    user_id { "user_id" }
-    user_name { "user_name" }
+    user_id { Faker::Number.number(digits: 10) }
+    user_name { Faker::Name.name  }
   end
 end
