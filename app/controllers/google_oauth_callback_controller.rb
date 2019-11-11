@@ -7,9 +7,10 @@ class GoogleOauthCallbackController < ApplicationController
     render text: 'You must be part of Octo technology' unless hd == 'octo.com'
 
     payload = {
-      :email => response['info']['email'],
-      :exp => response['credentials']['expires_at'],
-      :sub => response['extra']['raw_info']['sub']
+      name: response['info']['name'],
+      email: response['info']['email'],
+      exp: response['credentials']['expires_at'],
+      sub: response['extra']['raw_info']['sub']
     }
 
     token = JWT.encode payload, ENV['SECRET_KEY_BASE'], 'HS256'

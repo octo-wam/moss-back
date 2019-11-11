@@ -9,6 +9,8 @@ Rails.application.routes.draw do
         end
       end
 
+      get 'me', to: 'me#index'
+
       match '*path', to: 'api#not_found', via: :all
     end
   end
