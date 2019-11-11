@@ -70,13 +70,16 @@ Shoulda::Matchers.configure do |config|
   end
 end
 
-def headers_of_logged_in_user
-  current_user = {
+def current_user
+  {
     "name" => "Test User",
     "email" => "testuser@octo.com",
     "exp" => 1573506054,
     "sub" => "208294780284604222681"
   }
+end
+
+def headers_of_logged_in_user
   allow(JWT).to receive(:decode).and_return([current_user])
   { AUTHORIZATION: "Bearer WhateverToken" }
 end

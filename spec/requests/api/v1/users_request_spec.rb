@@ -13,8 +13,8 @@ describe 'GET /v1/me', type: :request do
 
   it 'returns information about the current user' do
     parsed_body = JSON.parse(response.body)
-    expect(parsed_body['id']).to eq("208294780284604222681")
-    expect(parsed_body['name']).to eq("Test User")
-    expect(parsed_body['email']).to eq("testuser@octo.com")
+    expect(parsed_body['id']).to eq(current_user['sub'])
+    expect(parsed_body['name']).to eq(current_user['name'])
+    expect(parsed_body['email']).to eq(current_user['email'])
   end
 end
