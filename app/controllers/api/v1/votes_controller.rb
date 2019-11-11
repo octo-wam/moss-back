@@ -4,7 +4,7 @@ module Api
   module V1
     class VotesController < ApiController
       def index
-        render body: [].to_json, status: :ok
+        @votes = Vote.all
       end
 
       def create
