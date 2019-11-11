@@ -69,3 +69,9 @@ Shoulda::Matchers.configure do |config|
     with.library :rails
   end
 end
+
+def headers_of_logged_in_user
+  current_user = {}
+  allow(JWT).to receive(:decode).and_return([current_user])
+  { 'AUTHORIZATION' => "Bearer WhateverToken"}
+end

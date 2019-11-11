@@ -5,7 +5,7 @@ module Api
     class QuestionsController < ApiController
       def index
         @questions = Question.includes(:answers)
-        render content_type: "application/json", status: :ok
+        render status: :ok
       end
     end
   end
