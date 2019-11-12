@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe 'GET /v1/me', type: :request do
   before do
-    get "/api/v1/me", headers: headers_of_logged_in_user
+    get '/api/v1/me', headers: headers_of_logged_in_user
   end
 
   it 'returns an ok HTTP status' do

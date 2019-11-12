@@ -16,11 +16,11 @@ module Api
 
       def authenticate
         bearer = request.headers['Authorization']
-        raise Unauthorized, "`Authorization` header is missing." unless bearer
-        
+        raise Unauthorized, '`Authorization` header is missing.' unless bearer
+
         token = bearer.match(/Bearer (.+)/)[1]
-        @current_user = JWT.decode(token, ENV['SECRET_KEY_BASE'], true, { algorithm: 'HS256' }).first
-      rescue Exception => e
+        @current_user = JWT.decode(token, ENV['SECRET_KEY_BASE'], true, algorithm: 'HS256').first
+      rescue StandardError => e
         render status: :unauthorized, json: {
           error: 'UNAUTHORIZED',
           message: e.message

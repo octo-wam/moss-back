@@ -30,8 +30,8 @@ describe 'Votes', type: :request do
 
     before do
       post "/api/v1/questions/#{question.id}/votes",
-        params: { answerId: answer.id },
-        headers: headers_of_logged_in_user
+           params: { answerId: answer.id },
+           headers: headers_of_logged_in_user
     end
 
     it 'returns a created HTTP status' do
@@ -60,8 +60,8 @@ describe 'Votes', type: :request do
 
       before do
         put "/api/v1/questions/#{question.id}/votes",
-          params: { answerId: second_answer.id },
-          headers: headers_of_logged_in_user
+            params: { answerId: second_answer.id },
+            headers: headers_of_logged_in_user
       end
 
       it 'returns an ok HTTP status' do
@@ -84,20 +84,20 @@ describe 'Votes', type: :request do
     context 'Vote does not exist yet' do
       before do
         put "/api/v1/questions/#{question.id}/votes",
-          params: { answerId: first_answer.id },
-          headers: headers_of_logged_in_user
+            params: { answerId: first_answer.id },
+            headers: headers_of_logged_in_user
       end
 
       it 'returns a created HTTP status' do
         expect(response).to have_http_status :created
       end
-  
+
       it 'stores the relevant information' do
         expect(Vote.last.answer_id).to eq(first_answer.id)
         expect(Vote.last.user_id).to eq(current_user['sub'])
         expect(Vote.last.user_name).to eq(current_user['name'])
       end
-  
+
       it 'returns the ID of the created vote' do
         parsed_body = JSON.parse(response.body)
         expect(parsed_body['id']).to eq(Vote.last.id)
