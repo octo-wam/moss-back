@@ -14,8 +14,7 @@ module Api
       end
 
       def update
-        @vote = Vote.find_by(user_id: current_user['sub'], answer: Answer.where(question_id: @answer.question_id))
-        if @vote
+        if current_user_vote_for_this_question
           @vote.update! answer: @answer
         else
           create_vote
@@ -29,8 +28,17 @@ module Api
       end
 
       def create_vote
-        @vote = Vote.create! answer: @answer, user_id: current_user['sub'], user_name: current_user['name']
+        @vote = Vote.create!(
+          answer: @answer,
+          user_id: current_user['sub'],
+          user_name: current_user['name']
+        )
         render status: :created
+      end
+
+      def current_user_vote_for_this_question
+        question_answers = Answer.where(question_id: @answer.question_id)
+        @vote = Vote.find_by(answer: question_answers, user_id: current_user['sub'])
       end
     end
   end
