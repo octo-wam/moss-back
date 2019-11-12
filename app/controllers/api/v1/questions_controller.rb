@@ -5,7 +5,10 @@ module Api
     class QuestionsController < ApiController
       def index
         @questions = Question.includes(:answers)
-        render status: :ok
+      end
+
+      def show
+        @question = Question.find(params[:id])
       end
     end
   end

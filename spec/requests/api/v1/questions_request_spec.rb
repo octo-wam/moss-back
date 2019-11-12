@@ -2,23 +2,45 @@
 
 require 'rails_helper'
 
-describe 'GET /v1/questions', type: :request do
+describe 'Questions', type: :request do
   let(:question) { create :question }
-  let!(:answer) { create :answer, question: question }
 
-  before do
-    get '/api/v1/questions', headers: headers_of_logged_in_user
+  describe 'GET /v1/questions' do
+    let!(:answer) { create :answer, question: question }
+
+    before do
+      get '/api/v1/questions', headers: headers_of_logged_in_user
+    end
+
+    it 'returns an ok HTTP status' do
+      expect(response).to have_http_status :ok
+    end
+
+    it 'returns an array with one question containing one answer' do
+      parsed_body = JSON.parse(response.body)
+      expect(parsed_body.size).to eq(1)
+      expect(parsed_body.first['title']).to eq(question.title)
+      expect(parsed_body.first['answers'].size).to eq(1)
+      expect(parsed_body.first['answers'].first['title']).to eq(answer.title)
+    end
   end
 
-  it 'returns an ok HTTP status' do
-    expect(response).to have_http_status :ok
-  end
+  describe 'GET /v1/questions/:id' do
+    let!(:answer) { create :answer, question: question }
 
-  it 'returns an array with one question containing one answer' do
-    parsed_body = JSON.parse(response.body)
-    expect(parsed_body.size).to eq(1)
-    expect(parsed_body.first['title']).to eq(question.title)
-    expect(parsed_body.first['answers'].size).to eq(1)
-    expect(parsed_body.first['answers'].first['title']).to eq(answer.title)
+    before do
+      get "/api/v1/questions/#{question.id}", headers: headers_of_logged_in_user
+    end
+
+    it 'returns an ok HTTP status' do
+      expect(response).to have_http_status :ok
+    end
+
+    it 'returns the question with its answers' do
+      parsed_body = JSON.parse(response.body)
+      expect(parsed_body['title']).to eq(question.title)
+      expect(parsed_body['answers'].size).to eq(1)
+      expect(parsed_body['answers'].first['title']).to eq(answer.title)
+    end
   end
 end
