@@ -2,7 +2,10 @@
 
 ## Installing
 
-You'll need ruby-2.6.5. You have to install bundler (`gem install bundler`) and install dependencies (`bundle install`).
+- [Install rvm](https://rvm.io/rvm/install)
+- Install ruby-2.6.5 : `rvm install "ruby-2.6.5"`
+- Install bundler : `gem install bundler`
+- Install dependencies : `bundle install`
 
 ## Run linter
 
