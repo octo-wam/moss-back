@@ -10,6 +10,10 @@ module Api
       def show
         @question = Question.find(params[:id])
       end
+
+      def create
+        render status: :created
+      end
     end
   end
 end

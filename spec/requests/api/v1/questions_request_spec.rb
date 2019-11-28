@@ -43,4 +43,24 @@ describe 'Questions', type: :request do
       expect(parsed_body['answers'].first['title']).to eq(answer.title)
     end
   end
+
+  describe 'POST /v1/questions/' do
+    it 'create a question with POST request' do
+      post "/api/v1/questions/", params: {
+        title: "mon super titre"
+      }, headers: headers_of_logged_in_user
+
+      expect(response).to have_http_status :created
+    end
+
+    it'return created question' do
+      post "/api/v1/questions/", params: {
+        title: "mon super titre"
+      }, headers: headers_of_logged_in_user
+
+      parsed_body = JSON.parse(response.body)
+
+      expect(parsed_body).to eq({"title"=>"mon super titre"})
+    end
+  end
 end
