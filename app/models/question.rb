@@ -2,5 +2,6 @@
 
 class Question < ApplicationRecord
   has_many :answers
-  validates :title, :description, :ending_date, :answers, presence: true
+
+  validates :title, :description, :ending_date, presence: true
 end

@@ -12,13 +12,13 @@ module Api
       end
 
       def create
-        # TODO
-        # validation qu'il y ai au moins 1 answer avec 1 titre
         answers = []
-        params[:answers].each do |answer|
+        params[:answers]&.each do |answer|
           next if answer.blank?
           answers << Answer.new(title: answer[:title], description: answer[:description])
         end
+
+        raise ActionController::BadRequest.new 'Answers should be filled' if answers.empty?
 
         @question = Question.create!(title: params[:title],
                                     description: params[:description],

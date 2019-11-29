@@ -47,19 +47,21 @@ describe 'Questions', type: :request do
   describe 'POST /v1/questions/' do
     it 'create a question with POST request' do
       post "/api/v1/questions/", params: {
-        title: "mon super titre",
-        answers: []
+        title: "Nom de league?",
+        description: "Quel est le nom de la league?",
+        endingDate: "2019-11-28T15:59:42.344Z",
+        answers: [{ title: "WAM", description: "WEB API MOBILE" }, { title: "FAME", description: "FRONT API MOBILE EXPERIENCE" }]
       }, headers: headers_of_logged_in_user
 
       expect(response).to have_http_status :created
     end
 
-    it'return created question' do
+    it 'return created question' do
       post "/api/v1/questions/", params: {
         title: "Nom de league?",
         description: "Quel est le nom de la league?",
         endingDate: "2019-11-28T15:59:42.344Z",
-        answers: [{title:"WAM", description:"WEB API MOBILE"},{title:"FAME", description:"FRONT API MOBILE EXPERIENCE"}]
+        answers: [{ title: "WAM", description: "WEB API MOBILE" }, { title: "FAME", description: "FRONT API MOBILE EXPERIENCE" }]
       }, headers: headers_of_logged_in_user
 
       parsed_body = JSON.parse(response.body)
@@ -73,38 +75,38 @@ describe 'Questions', type: :request do
       expect(parsed_body['endingDate']).to eq("2019-11-28T15:59:42.344Z")
     end
 
-    it'return an error when missing title field' do
+    it 'return an error when missing title field' do
       post "/api/v1/questions/", params: {
         description: "Quel est le nom de la league?",
         endingDate: "2019-11-28T15:59:42.344Z",
-        answers: [{title:"WAM", description:"WEB API MOBILE"},{title:"FAME", description:"FRONT API MOBILE EXPERIENCE"}]
+        answers: [{ title: "WAM", description: "WEB API MOBILE" }, { title: "FAME", description: "FRONT API MOBILE EXPERIENCE" }]
       }, headers: headers_of_logged_in_user
 
       expect(response).to have_http_status :bad_request
     end
 
-    it'return an error when missing description field' do
+    it 'return an error when missing description field' do
       post "/api/v1/questions/", params: {
         title: "Nom de league?",
         endingDate: "2019-11-28T15:59:42.344Z",
-        answers: [{title:"WAM", description:"WEB API MOBILE"},{title:"FAME", description:"FRONT API MOBILE EXPERIENCE"}]
+        answers: [{ title: "WAM", description: "WEB API MOBILE" }, { title: "FAME", description: "FRONT API MOBILE EXPERIENCE" }]
       }, headers: headers_of_logged_in_user
 
       expect(response).to have_http_status :bad_request
     end
 
-    it'return an error when missing endingDate field' do
+    it 'return an error when missing endingDate field' do
       post "/api/v1/questions/", params: {
         title: "Nom de league?",
         description: "Quel est le nom de la league?",
-        answers: [{title:"WAM", description:"WEB API MOBILE"},{title:"FAME", description:"FRONT API MOBILE EXPERIENCE"}]
+        answers: [{ title: "WAM", description: "WEB API MOBILE" }, { title: "FAME", description: "FRONT API MOBILE EXPERIENCE" }]
       }, headers: headers_of_logged_in_user
 
       expect(response).to have_http_status :bad_request
     end
 
 
-    it'return an error when no answer' do
+    it 'return an error when no answer' do
       post "/api/v1/questions/", params: {
         title: "Nom de league?",
         description: "Quel est le nom de la league?",
@@ -114,23 +116,23 @@ describe 'Questions', type: :request do
       expect(response).to have_http_status :bad_request
     end
 
-    it'return an error when missing title of an answer' do
+    it 'return an error when missing title of an answer' do
       post "/api/v1/questions/", params: {
         title: "Nom de league?",
         description: "Quel est le nom de la league?",
         endingDate: "2019-11-28T15:59:42.344Z",
-        answers: [{description:"WEB API MOBILE"},{title:"FAME", description:"FRONT API MOBILE EXPERIENCE"}]
+        answers: [{ description: "WEB API MOBILE" }, { title: "FAME", description: "FRONT API MOBILE EXPERIENCE" }]
       }, headers: headers_of_logged_in_user
 
       expect(response).to have_http_status :bad_request
     end
 
-    it'return an error when missing description of an answer' do
+    it 'return an error when missing description of an answer' do
       post "/api/v1/questions/", params: {
         title: "Nom de league?",
         description: "Quel est le nom de la league?",
         endingDate: "2019-11-28T15:59:42.344Z",
-        answers: [{title:"WAM"},{title:"FAME", description:"FRONT API MOBILE EXPERIENCE"}]
+        answers: [{ title: "WAM" }, { title: "FAME", description: "FRONT API MOBILE EXPERIENCE" }]
       }, headers: headers_of_logged_in_user
 
       expect(response).to have_http_status :bad_request
