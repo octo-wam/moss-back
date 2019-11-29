@@ -13,7 +13,8 @@ module Api
 
       def create
         @question = Question.new(question_params)
-        raise ActionController::BadRequest.new 'Answers should be filled' if @question.answers.empty?
+        raise ActionController::BadRequest, 'Answers should be filled' if @question.answers.empty?
+
         @question.save!
 
         render status: :created
@@ -22,7 +23,7 @@ module Api
       private
 
       def question_params
-        new_params = params.permit(:title, :description, :endingDate, answers: [:title, :description])
+        new_params = params.permit(:title, :description, :endingDate, answers: %i[title description])
         new_params[:ending_date] = new_params.delete :endingDate if params[:endingDate]
         new_params[:answers_attributes] = new_params.delete :answers if params[:answers]
         new_params
