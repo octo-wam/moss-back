@@ -5,5 +5,6 @@ FactoryBot.define do
     title { Faker::Lorem.question }
     description { Faker::Lorem.paragraph }
     ending_date { 1.week.from_now }
+    association :answers
   end
 end
