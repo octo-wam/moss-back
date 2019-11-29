@@ -8,4 +8,11 @@ RSpec.describe Answer, type: :model do
 
     it { expect(answer).to belong_to :question }
   end
+
+  describe 'validations' do
+    subject(:answer) { build :answer }
+
+    it { is_expected.to validate_presence_of(:title) }
+    it { is_expected.to validate_presence_of(:description) }
+  end
 end
