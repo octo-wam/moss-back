@@ -12,20 +12,20 @@ module Api
       end
 
       def create
-        answers = []
-        params[:answers]&.each do |answer|
-          next if answer.blank?
-          answers << Answer.new(title: answer[:title], description: answer[:description])
-        end
-
-        raise ActionController::BadRequest.new 'Answers should be filled' if answers.empty?
-
-        @question = Question.create!(title: params[:title],
-                                    description: params[:description],
-                                    ending_date: params[:endingDate],
-                                    answers: answers)
+        @question = Question.new(question_params)
+        raise ActionController::BadRequest.new 'Answers should be filled' if @question.answers.empty?
+        @question.save!
 
         render status: :created
+      end
+
+      private
+
+      def question_params
+        new_params = params.permit(:title, :description, :endingDate, answers: [:title, :description])
+        new_params[:ending_date] = new_params.delete :endingDate if params[:endingDate]
+        new_params[:answers_attributes] = new_params.delete :answers if params[:answers]
+        new_params
       end
     end
   end
