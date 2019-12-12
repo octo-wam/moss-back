@@ -89,6 +89,12 @@ describe 'Questions', type: :request do
                                      ])
     end
 
+    it 'sends an email' do
+      expect do
+        post '/api/v1/questions/', params: question_parameters, headers: headers_of_logged_in_user
+      end.to change(ActionMailer::Base.deliveries, :count)
+    end
+
     it 'returns an error when title field is missing' do
       post '/api/v1/questions/', params: question_parameters.except(:title), headers: headers_of_logged_in_user
 

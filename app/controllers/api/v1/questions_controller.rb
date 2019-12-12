@@ -16,6 +16,7 @@ module Api
         raise ActionController::BadRequest, 'Answers should be filled' if @question.answers.empty?
 
         @question.save!
+        NotificationMailer.with(question: @question).new_question.deliver_later
 
         render status: :created
       end

@@ -1,0 +1,14 @@
+<h1>Nous avons besoin de ton avis !</h1>
+<p>Hello, WAMinou !</p>
+<p>
+  Nous avons besoin de ton avis sur la question suivante :
+</p>
+<h2><a href="<%= @question_url %>"><%= @question.title %></a></h2>
+<blockquote>
+  <%= @question.description %>
+</blockquote>
+<p>
+  Pour y répondre dès maintenant, suis ce lien :
+  <a href="<%= @question_url %>"><%= @question_url %></a>
+</p>
+<p>Merci, et à bientôt chez WAM !</p>

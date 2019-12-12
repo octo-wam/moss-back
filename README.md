@@ -11,6 +11,7 @@
     - `createuser -s -r postgres`
 - Install dependencies : `bundle install`
 - Run : `rails db:create` then `rails db:migrate`
+- Create `.env` file from `.env.example` and fill the values thanks to a teammate
 
 ## Run linter
 
@@ -23,3 +24,7 @@
 ## Start server
 
 `rails s`
+
+## Google Auth
+
+http://localhost:3000/auth/google_oauth2/callback

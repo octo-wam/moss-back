@@ -1,13 +1,22 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <style>
-      /* Email styles need to be inline */
-    </style>
-  </head>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <link rel="stylesheet" href="mailers.css">
+  <style>
+    /* Email styles need to be inline */
+  </style>
+</head>
 
-  <body>
-    <%= yield %>
-  </body>
+<body>
+<div class="header">
+  <h1>
+    <span>MOSS</span>
+  </h1>
+  <div class="header-def">Massive Online Simple Sociocracy</div>
+</div>
+<div class="content">
+  <%= yield %>
+</div>
+</body>
 </html>

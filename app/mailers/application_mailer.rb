@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class ApplicationMailer < ActionMailer::Base
-  default from: 'from@example.com'
+  SENDER_EMAIL = ENV['APPLICATION_EMAIL_ADDRESS']
+  SENDER = "MOSS <#{SENDER_EMAIL}>"
+  default from: SENDER
+
   layout 'mailer'
 end
