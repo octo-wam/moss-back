@@ -32,17 +32,18 @@ gem 'bootsnap', '>= 1.1.0', require: false
 
 gem 'rack-cors'
 
+gem 'omniauth-google-oauth2'
+
+gem 'jwt'
+
 group :development, :test do
   gem 'factory_bot_rails'
   gem 'faker'
   gem 'rspec-rails'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'rspec_junit_formatter', require: false
 end
-
-gem 'omniauth-google-oauth2'
-
-gem 'jwt'
 
 group :development do
   gem 'rubocop', require: false

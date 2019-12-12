@@ -1,0 +1,90 @@
+# Ruby CircleCI 2.1 configuration file
+#
+# Check https://circleci.com/docs/2.0/ruby/ for more details
+#
+version: 2.1
+
+orbs:
+  ruby: circleci/ruby@0.1.2 # Ruby orb registry: https://circleci.com/orbs/registry/orb/circleci/ruby
+
+defaults: &defaults
+  docker:
+    - image: circleci/ruby:2.6.5-browsers
+    - image: circleci/postgres:11.5
+      environment:
+        POSTGRES_USER: moss_back_test
+        POSTGRES_PASSWORD: moss_back_test
+        POSTGRES_DB: moss_back_test
+
+bundle_restore_cache: &bundle_restore_cache
+  restore_cache:
+    key: v1-bundle-install-{{ arch }}-{{ checksum "Gemfile.lock" }}
+
+bundle_save_cache: &bundle_save_cache
+  save_cache:
+    key: v1-bundle-install-{{ arch }}-{{ checksum "Gemfile.lock" }}
+    paths:
+      - ~/vendor/bundle
+
+bundle_install: &bundle_install
+  run:
+    name: Install Ruby Dependencies
+    command: bundle install --path ~/vendor/bundle
+
+jobs:
+  build:
+    <<: *defaults
+    steps:
+      - checkout
+      - *bundle_restore_cache
+      - *bundle_install
+      - *bundle_save_cache
+  test:
+    <<: *defaults
+    parallelism: 1
+    steps:
+      - checkout
+      - *bundle_restore_cache
+      - *bundle_install
+      - run:
+          name: Which bundler?
+          command: bundle -v
+      - ruby/bundle-install
+      - run:
+          environment:
+            DATABASE_URL: "postgres://moss_back_test@localhost:5432/moss_back_test"
+          name: Create DB
+          command: bundle exec rake db:create db:schema:load db:migrate RAILS_ENV=test
+      - run:
+          environment:
+            DATABASE_URL: "postgres://moss_back_test@localhost:5432/moss_back_test"
+          name: Run Tests, Split by Timings
+          command: |
+            bundle exec rspec --profile 10 \
+              --format RspecJunitFormatter \
+              --out ~/test-results/rspec/results.xml \
+              --format progress \
+              $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
+      - store_test_results:
+          path: ~/test-results
+  lint:
+    <<: *defaults
+    steps:
+      - checkout
+      - *bundle_restore_cache
+      - *bundle_install
+      - run:
+          name: Run lint tasks
+          command: bundle exec rubocop
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+      - lint:
+          requires:
+            - build
