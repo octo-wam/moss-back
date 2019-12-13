@@ -24,7 +24,8 @@ module Api
       private
 
       def find_answer
-        @answer = Answer.find(params[:answerId])
+        @answer = Answer.find_by(id: params[:answerId])
+        raise ActionController::BadRequest, 'answerId does not exist' unless @answer
       end
 
       def create_vote

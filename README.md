@@ -3,7 +3,7 @@
 ## Installing
 
 - [Install rvm](https://rvm.io/rvm/install)
-- Install ruby-2.7.2 : `rvm install "ruby-2.7"`
+- Install ruby-2.7.2 : `rvm install "ruby-2.7.2"`
 - Install bundler : `gem install bundler`
 - Install postgres :
     - `brew install postgres`
@@ -32,4 +32,4 @@ Or :
 ## Google Auth
 
 - Login: http://localhost:3000/auth/google_oauth2
-- Callback: http://localhost:3000/auth/google_oauth2/callback
+- Callback:http://localhost:3000/auth/google_oauth2

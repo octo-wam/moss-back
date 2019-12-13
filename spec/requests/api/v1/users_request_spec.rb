@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'GET /v1/me', type: :request do
+describe 'Users Request', type: :request do
   save_current_user
 
   before do
