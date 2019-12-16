@@ -42,8 +42,8 @@ jobs:
       # Restore bundle cache: https://circleci.com/docs/2.0/caching/
       - restore_cache:
           keys:
-            - rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
-            - rails-demo-bundle-v2-
+            - rails-moss-bundle-v1-{{ checksum "Gemfile.lock" }}
+            - rails-moss-bundle-v1-
 
       - run: # Install Ruby dependencies
           name: Bundle Install
@@ -51,7 +51,7 @@ jobs:
 
       # Store bundle cache for Ruby dependencies
       - save_cache:
-          key: rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
+          key: rails-moss-bundle-v1-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/bundle
 
