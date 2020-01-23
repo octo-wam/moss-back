@@ -6,7 +6,7 @@ module Api
       before_action :find_answer, only: %i[create update]
 
       def index
-        @votes = Vote.all
+        @votes = Vote.on_question(params[:id])
       end
 
       def create
