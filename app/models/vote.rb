@@ -15,6 +15,8 @@ class Vote < ApplicationRecord
 
   validates_with VoteValidator
 
+  scope :on_question, ->(question) { joins(answer: :question).where(answers: { question: question }) }
+
   def other_votes
     Vote.where.not(id: id)
   end

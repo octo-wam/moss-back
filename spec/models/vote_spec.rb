@@ -40,4 +40,17 @@ RSpec.describe Vote, type: :model do
       end
     end
   end
+
+  describe '.on_question' do
+    subject(:vote_on_question) { described_class.on_question(question) }
+
+    let!(:question) { create :question }
+    let!(:answer_of_question) { create :answer, question: question }
+    let!(:vote_on_answer_of_question) { create :vote, answer: answer_of_question }
+    let!(:vote_on_other_question) { create :vote }
+
+    it 'only returns the vote related to the given question' do
+      expect(vote_on_question).to eq([vote_on_answer_of_question])
+    end
+  end
 end

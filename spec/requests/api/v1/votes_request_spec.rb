@@ -7,6 +7,7 @@ describe 'Votes', type: :request do
     let(:question) { create :question }
     let(:answer) { create :answer, question: question }
     let!(:vote) { create :vote, answer: answer }
+    let!(:vote_of_other_question) { create :vote }
 
     before do
       get "/api/v1/questions/#{question.id}/votes", headers: headers_of_logged_in_user
