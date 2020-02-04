@@ -3,7 +3,7 @@
 class GoogleOauthCallbackController < ApplicationController
   def callback
     @response = request.env['omniauth.auth']
-    redirect_to =  request.env["omniauth.params"]["redirect_to"] || ENV['FRONT_BASE_URL']
+    redirect_to =  request.env['omniauth.params']['redirect_to'] || ENV['FRONT_BASE_URL']
     redirect_to "#{redirect_to}#access_token=#{token}"
   end
 
