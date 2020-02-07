@@ -4,7 +4,9 @@ if question
   json.extract! question,
                 :id,
                 :title,
-                :description
+                :description,
+                :user_id,
+                :user_name
 
   json.endingDate question.ending_date
 

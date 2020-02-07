@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+
 module Api
   module V1
     class QuestionsController < ApiController
@@ -27,6 +28,8 @@ module Api
         new_params = params.permit(:title, :description, :endingDate, answers: %i[title description])
         new_params[:ending_date] = new_params.delete :endingDate if params[:endingDate]
         new_params[:answers_attributes] = new_params.delete :answers if params[:answers]
+        new_params[:user_id] = current_user['sub']
+        new_params[:user_name] = current_user['name']
         new_params
       end
     end
