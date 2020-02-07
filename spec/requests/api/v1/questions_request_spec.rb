@@ -69,7 +69,10 @@ describe 'Questions', type: :request do
       parsed_body = JSON.parse(response.body)
       expect(parsed_body.except('id', 'answers')).to eq('title' => 'Nom de league?',
                                                         'description' => 'Quel est le nom de la league?',
-                                                        'endingDate' => '2019-11-28T15:59:42.344Z')
+                                                        'endingDate' => '2019-11-28T15:59:42.344Z',
+                                                        'user_name' => 'Test User',
+                                                        'user_id' => '208294780284604222681'
+                                                      )
     end
 
     it 'returns the created answers' do
