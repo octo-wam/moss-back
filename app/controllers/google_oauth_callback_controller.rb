@@ -3,11 +3,18 @@
 class GoogleOauthCallbackController < ApplicationController
   def callback
     @response = request.env['omniauth.auth']
-    redirection_url =  request.env['omniauth.params']['redirect_to'] || ENV['FRONT_BASE_URL']
-    redirect_to "#{redirection_url}#access_token=#{token}"
+    redirect_to front_app_url_with_token(request.env)
   end
 
   private
+
+  def front_app_url_with_token(env)
+    if env['omniauth.params']['redirect_to'].starts_with? ENV['FRONT_BASE_URL']
+      front_app_url = env['omniauth.params']['redirect_to']
+    end
+    front_app_url ||= ENV['FRONT_BASE_URL']
+    "#{front_app_url}#access_token=#{token}"
+  end
 
   def validate_domain
     hosted_domain = @response['extra']['raw_info']['hd']
