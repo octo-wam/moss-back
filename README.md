@@ -3,7 +3,7 @@
 ## Installing
 
 - [Install rvm](https://rvm.io/rvm/install)
-- Install ruby-2.6.5 : `rvm install "ruby-2.6.5"`
+- Install ruby-2.7.0 : `rvm install "ruby-2.6.5"`
 - Install bundler : `gem install bundler`
 - Install postgres :
     - `brew install postgres`
@@ -20,6 +20,10 @@
 ## Run tests
 
 `rspec`
+
+Or :
+
+`RUBYOPT='-W0' rspec` if there are Ruby 2.7 warnings
 
 ## Start server
 

@@ -93,4 +93,9 @@ RSpec.configure do |config|
   #   # test failures related to randomization by passing the same `--seed` value
   #   # as the one that triggered the failure.
   #   Kernel.srand config.seed
+
+  # Fix to allow tests on ActionMailer::Base.deliveries
+  config.before(:suite) do
+    (ActiveJob::Base.descendants << ActiveJob::Base).each(&:disable_test_adapter)
+  end
 end
