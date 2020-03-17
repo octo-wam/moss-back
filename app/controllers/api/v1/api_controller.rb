@@ -10,10 +10,6 @@ module Api
       rescue_from ActiveRecord::ReadOnlyRecord, with: :bad_request
       rescue_from ActionController::BadRequest, with: :bad_request
 
-      def bad_request(error)
-        render json: { error: error.message }, status: :bad_request
-      end
-
       def authenticate
         bearer = request.headers['Authorization']
         raise Unauthorized, '`Authorization` header is missing.' unless bearer
@@ -27,6 +23,18 @@ module Api
         }
       end
       class Unauthorized < StandardError; end
+
+      private
+
+      def current_user_id
+        {
+          user_id: current_user['sub']
+        }
+      end
+
+      def bad_request(error)
+        render json: { error: error.message }, status: :bad_request
+      end
     end
   end
 end

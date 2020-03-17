@@ -17,16 +17,28 @@ class GoogleOauthCallbackController < ApplicationController
   end
 
   def validate_domain
-    hosted_domain = @response['extra']['raw_info']['hd']
+    hosted_domain = @auth_info['extra']['raw_info']['hd']
     render text: 'You must be part of OCTO Technology' unless hosted_domain == 'octo.com'
+  end
+
+  # TODO: Change SECRET_KEY_BASE to invalidate tokens on next deployment
+  def upsert_user
+    user = User.find_or_initialize_by(id: @auth_info['extra']['raw_info']['sub'])
+    user.assign_attributes(
+      name: @auth_info['info']['name'],
+      email: @auth_info['info']['email'],
+      photo: @auth_info['extra']['raw_info']['picture']
+    )
+    user.save!
   end
 
   def token
     payload = {
-      name: @response['info']['name'],
-      email: @response['info']['email'],
-      exp: @response['credentials']['expires_at'],
-      sub: @response['extra']['raw_info']['sub']
+      name: @auth_info['info']['name'],
+      email: @auth_info['info']['email'],
+      photo: @auth_info['extra']['raw_info']['picture'],
+      exp: @auth_info['credentials']['expires_at'],
+      sub: @auth_info['extra']['raw_info']['sub']
     }
 
     JWT.encode payload, ENV['SECRET_KEY_BASE'], 'HS256'

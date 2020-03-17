@@ -5,6 +5,7 @@ require 'rails_helper'
 describe GoogleOauthCallbackController, type: :controller do
   let(:controller) { described_class.new }
 
+<<<<<<< HEAD
   describe 'front_app_url_with_token' do
     subject(:front_app_url) { controller.send(:front_app_url_with_token, request_env) }
 
@@ -39,6 +40,53 @@ describe GoogleOauthCallbackController, type: :controller do
 
       it 'returns an URL that is not redirect_to query param' do
         expect(front_app_url).to eq 'https://moss-front.fr/#access_token=my-access-token'
+=======
+  describe 'upsert_user' do
+    subject(:upsert_user) { controller.send(:upsert_user) }
+
+    let(:auth_info) do
+      {
+        'info' => { 'email' => 'jean.paul@email.com', 'name' => 'Jean Paul' },
+        'extra' => {
+          'raw_info' => { 'sub' => '123456789', 'picture' => 'https://photos.fr/jean-paul.jpg' }
+        }
+      }
+    end
+
+    before { controller.instance_variable_set :@auth_info, auth_info }
+
+    context 'user is not already in the database' do
+      it 'creates the user' do
+        expect { upsert_user }.to change(User, :count).by(1)
+      end
+
+      it 'assigns accurate attributes to the new user' do
+        upsert_user
+
+        last_user = User.last
+        expect(last_user.id).to eq '123456789'
+        expect(last_user.name).to eq 'Jean Paul'
+        expect(last_user.email).to eq 'jean.paul@email.com'
+        expect(last_user.photo).to eq 'https://photos.fr/jean-paul.jpg'
+      end
+    end
+
+    context 'user is already in the database' do
+      before { create :user, id: '123456789', name: 'Jacques', email: 'jacques@email.com', photo: nil }
+
+      it 'does not create a user' do
+        expect { upsert_user }.not_to change(User, :count)
+      end
+
+      it 'updates accurate attributes to user' do
+        upsert_user
+
+        last_user = User.last
+        expect(last_user.id).to eq '123456789'
+        expect(last_user.name).to eq 'Jean Paul'
+        expect(last_user.email).to eq 'jean.paul@email.com'
+        expect(last_user.photo).to eq 'https://photos.fr/jean-paul.jpg'
+>>>>>>> 740dc14... Some code review & Add user model to prevent duplicates of user info across the app
       end
     end
   end

@@ -13,8 +13,12 @@ class VoteValidator < ActiveModel::Validator
 end
 
 class Vote < ApplicationRecord
+  # TODO: Delete user_name attribute on next deployment
+
+  belongs_to :user
   belongs_to :answer
 
+  validates :user_id, presence: true
   validates_with VoteValidator
 
   scope :on_question, ->(question) { joins(answer: :question).where(answers: { question: question }) }

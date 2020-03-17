@@ -6,10 +6,17 @@ RSpec.describe Vote, type: :model do
   describe 'associations' do
     subject(:vote) { build :vote }
 
+    it { expect(vote).to belong_to :user }
     it { expect(vote).to belong_to :answer }
   end
 
   describe 'validations' do
+    describe 'regular validations' do
+      subject(:vote) { build :vote }
+
+      it { is_expected.to validate_presence_of(:user_id) }
+    end
+
     describe 'it is not possible to vote for an ended question' do
       let!(:answer) { create :answer, question: question }
 
@@ -34,27 +41,29 @@ RSpec.describe Vote, type: :model do
       let(:question) { create :question }
       let(:first_answer) { create :answer, question: question }
 
-      context 'current_user has already voted for this answer' do
-        let!(:previous_vote) { create :vote, user_id: current_user['id'], answer: first_answer }
+      save_current_user
 
-        let(:new_vote) { build :vote, user_id: current_user['id'], answer: first_answer }
+      context 'current_user has already voted for this answer' do
+        let!(:previous_vote) { create :vote, user_id: current_user['sub'], answer: first_answer }
+
+        let(:new_vote) { build :vote, user_id: current_user['sub'], answer: first_answer }
 
         it { expect(new_vote.valid?).to be false }
       end
 
       context 'current_user has already voted for this question' do
         let(:second_answer) { create :answer, question: question }
-        let!(:previous_vote) { create :vote, user_id: current_user['id'], answer: first_answer }
+        let!(:previous_vote) { create :vote, user_id: current_user['sub'], answer: first_answer }
 
-        let(:new_vote) { build :vote, user_id: current_user['id'], answer: second_answer }
+        let(:new_vote) { build :vote, user_id: current_user['sub'], answer: second_answer }
 
         it { expect(new_vote.valid?).to be false }
       end
 
       context 'current_user has not already voted for this question' do
-        let!(:previous_vote) { create :vote, user_id: current_user['id'] }
+        let!(:previous_vote) { create :vote, user_id: current_user['sub'] }
 
-        let(:new_vote) { build :vote, user_id: current_user['id'], answer: first_answer }
+        let(:new_vote) { build :vote, user_id: current_user['sub'], answer: first_answer }
 
         it { expect(new_vote.valid?).to be true }
       end

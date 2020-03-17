@@ -6,7 +6,7 @@ module Api
       before_action :find_answer, only: %i[create update]
 
       def index
-        @votes = Vote.on_question(params[:id])
+        @votes = Vote.on_question(params[:id]).includes(:user)
       end
 
       def create
@@ -28,11 +28,7 @@ module Api
       end
 
       def create_vote
-        @vote = Vote.create!(
-          answer: @answer,
-          user_id: current_user['sub'],
-          user_name: current_user['name']
-        )
+        @vote = Vote.create!(current_user_id.merge(answer: @answer))
         render status: :created
       end
 

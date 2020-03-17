@@ -3,7 +3,8 @@
 require 'rails_helper'
 
 describe 'Questions', type: :request do
-  let(:question) { create :question }
+  let(:user) { create :user }
+  let(:question) { create :question, user: user }
 
   describe 'GET /v1/questions' do
     let!(:answer) { create :answer, question: question }
@@ -22,6 +23,9 @@ describe 'Questions', type: :request do
       expect(parsed_body.first['title']).to eq(question.title)
       expect(parsed_body.first['answers'].size).to eq(1)
       expect(parsed_body.first['answers'].first['title']).to eq(answer.title)
+      expect(parsed_body.first['user']).to eq('id' => question.user_id,
+                                              'name' => user.name,
+                                              'photo' => user.photo)
     end
   end
 
@@ -41,6 +45,9 @@ describe 'Questions', type: :request do
       expect(parsed_body['title']).to eq(question.title)
       expect(parsed_body['answers'].size).to eq(1)
       expect(parsed_body['answers'].first['title']).to eq(answer.title)
+      expect(parsed_body['user']).to eq('id' => question.user_id,
+                                        'name' => user.name,
+                                        'photo' => user.photo)
     end
   end
 
@@ -57,6 +64,8 @@ describe 'Questions', type: :request do
       }
     end
 
+    save_current_user
+
     it 'returns a created HTTP status' do
       post '/api/v1/questions/', params: question_parameters, headers: headers_of_logged_in_user
 
@@ -70,9 +79,11 @@ describe 'Questions', type: :request do
       expect(parsed_body.except('id', 'answers')).to eq('title' => 'Nom de league?',
                                                         'description' => 'Quel est le nom de la league?',
                                                         'endingDate' => '2019-11-28T15:59:42.344Z',
-                                                        'user_name' => 'Test User',
-                                                        'user_id' => '208294780284604222681'
-                                                      )
+                                                        'user' => {
+                                                          'id' => '208294780284604222681',
+                                                          'name' => 'Test User',
+                                                          'photo' => 'https://photos.fr/test-user.jpg'
+                                                        })
     end
 
     it 'returns the created answers' do

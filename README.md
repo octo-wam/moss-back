@@ -27,8 +27,9 @@ Or :
 
 ## Start server
 
-`rails s`
+`foreman start`
 
 ## Google Auth
 
-http://localhost:3000/auth/google_oauth2/callback
+- Login: http://localhost:3000/auth/google_oauth2
+- Callback: http://localhost:3000/auth/google_oauth2/callback

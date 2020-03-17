@@ -78,8 +78,13 @@ def current_user
     'name' => 'Test User',
     'email' => 'testuser@octo.com',
     'exp' => 1_573_506_054,
-    'sub' => '208294780284604222681'
+    'sub' => '208294780284604222681',
+    'photo' => 'https://photos.fr/test-user.jpg'
   }
+end
+
+def save_current_user
+  before { create :user, id: current_user['sub'], name: current_user['name'], photo: current_user['photo'] }
 end
 
 def headers_of_logged_in_user
