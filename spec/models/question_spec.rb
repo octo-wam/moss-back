@@ -17,4 +17,16 @@ RSpec.describe Question, type: :model do
     it { is_expected.to validate_presence_of(:description) }
     it { is_expected.to validate_presence_of(:ending_date) }
   end
+
+  describe '.of_answer' do
+    subject(:question_of_answer) { described_class.of_answer(answer) }
+
+    let(:question) { create :question }
+    let!(:answer) { create :answer, question: question }
+    let!(:other_answer) { create :answer }
+
+    it 'only returns the question related to the given answer' do
+      expect(question_of_answer).to eq([question])
+    end
+  end
 end
