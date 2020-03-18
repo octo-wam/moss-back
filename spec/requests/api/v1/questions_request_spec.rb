@@ -147,4 +147,133 @@ describe 'Questions', type: :request do
       expect(response).to have_http_status :bad_request
     end
   end
+
+  # TODO: Block to the question user/owner
+  describe 'PUT /v1/questions/:id' do
+    subject(:update_question) do
+      put "/api/v1/questions/#{question.id}", params: question_new_parameters, headers: headers_of_logged_in_user
+    end
+
+    context 'parameters are good' do
+      let!(:answer_to_update) { create :answer, title: 'Answer to update', question: question }
+      let!(:answer_to_ignore) { create :answer, title: 'Answer to ignore', question: question }
+      let!(:answer_to_delete) { create :answer, title: 'Answer to delete', question: question }
+
+      let(:question_new_parameters) do
+        {
+          title: 'Nom de league?',
+          description: 'Quel est le nom de la league?',
+          endingDate: '2019-11-28T15:59:42.344Z',
+          answers: [
+            { id: answer_to_update.id, title: 'Updated answer', description: 'New Description' },
+            { id: answer_to_delete.id, title: 'Delete this', _destroy: 'true' },
+            { title: 'New answer', description: 'FRONT API MOBILE EXPERIENCE' }
+          ]
+        }
+      end
+
+      it 'returns a ok HTTP status' do
+        update_question
+
+        expect(response).to have_http_status :ok
+      end
+
+      it 'returns the updated question' do
+        update_question
+
+        parsed_body = JSON.parse(response.body)
+        expect(parsed_body.except('id', 'answers')).to eq('title' => 'Nom de league?',
+                                                          'description' => 'Quel est le nom de la league?',
+                                                          'endingDate' => '2019-11-28T15:59:42.344Z')
+      end
+
+      it 'adds one answer but removes one answer' do
+        expect { update_question }.not_to change(Answer, :count)
+      end
+
+      it 'returns the updated answers (one created, one updated, one deleted)' do
+        update_question
+
+        parsed_body = JSON.parse(response.body)
+        expected_answers = parsed_body['answers'].map { |answer| answer.except('id', 'description') }
+        expect(expected_answers).to eq([
+                                         { 'title' => 'Updated answer' },
+                                         { 'title' => 'Answer to ignore' },
+                                         { 'title' => 'New answer' }
+                                       ])
+      end
+    end
+
+    context 'no answer is given' do
+      let!(:answer) { create :answer, question: question }
+
+      let(:question_new_parameters) do
+        {
+          title: 'Nom de league?',
+          answers: []
+        }
+      end
+
+      it 'returns an ok HTTP status' do
+        update_question
+
+        expect(response).to have_http_status :ok
+      end
+    end
+
+    context 'asking to delete the last answer' do
+      let!(:answer) { create :answer, title: 'Last answer', question: question }
+
+      let(:question_new_parameters) do
+        {
+          title: 'Nom de league?',
+          answers: [
+            { id: answer.id, title: 'Do not delete this', _destroy: 'true' }
+          ]
+        }
+      end
+
+      it 'does not delete the answer' do
+        expect { update_question }.not_to change(Answer, :count)
+      end
+
+      it 'does not delete the answer 2' do
+        update_question
+
+        expect(answer.reload.title).to eq 'Last answer'
+      end
+
+      it 'returns a bad request HTTP status' do
+        update_question
+
+        expect(response).to have_http_status :bad_request
+      end
+    end
+  end
+
+  # TODO: Block to the question user/owner
+  describe 'DELETE /v1/questions/:id' do
+    subject(:delete_question) { delete "/api/v1/questions/#{question.id}", headers: headers_of_logged_in_user }
+
+    let!(:question) { create :question }
+
+    before do
+      create :answer, question: question
+      create :answer, question: question
+    end
+
+    it 'deletes the question' do
+      expect { delete_question }.to change(Question, :count).by(-1)
+    end
+
+    xit 'deletes two answers' do
+      expect { delete_question }.to change(Answer, :count).by(-2)
+    end
+
+    it 'returns a no_content HTTP status' do
+      delete_question
+
+      expect(response).to have_http_status :no_content
+    end
+  end
 end
