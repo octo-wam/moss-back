@@ -37,7 +37,7 @@ describe GoogleOauthCallbackController, type: :controller do
         }
       end
 
-      it 'returns a URL that is not redirect_to query param' do
+      it 'returns an URL that is not redirect_to query param' do
         expect(front_app_url).to eq 'https://moss-front.fr/#access_token=my-access-token'
       end
     end
