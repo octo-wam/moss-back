@@ -21,10 +21,22 @@ module Api
         render status: :created
       end
 
+      def update
+        @question = Question.find(params[:id])
+        Question.transaction do
+          @question.update(question_params)
+          raise ActionController::BadRequest, 'Answers should be filled' if @question.answers.empty?
+        end
+      end
+
+      def destroy
+        @question = Question.find(params[:id]).destroy
+      end
+
       private
 
       def question_params
-        new_params = params.permit(:title, :description, :endingDate, answers: %i[title description])
+        new_params = params.permit(:title, :description, :endingDate, answers: %i[id title description _destroy])
         new_params[:ending_date] = new_params.delete :endingDate if params[:endingDate]
         new_params[:answers_attributes] = new_params.delete :answers if params[:answers]
         new_params

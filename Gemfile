@@ -26,9 +26,12 @@ gem 'bootsnap', '>= 1.4.2', require: false
 
 gem 'rack-cors'
 
+# Security
+gem 'jwt'
 gem 'omniauth-google-oauth2'
 
-gem 'jwt'
+# Utils
+gem 'acts_as_paranoid', '~> 0.6'
 gem 'premailer-rails'
 
 group :development, :test do
