@@ -7,4 +7,8 @@ class Question < ApplicationRecord
   validates :title, :description, :ending_date, presence: true
 
   scope :of_answer, ->(answer) { joins(:answers).where(answers: { id: answer }) }
+
+  def ended?
+    ending_date.before?(Time.zone.now)
+  end
 end

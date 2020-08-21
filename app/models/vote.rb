@@ -21,7 +21,7 @@ class Vote < ApplicationRecord
 
   def on_ended_question?
     question_of_answer = Question.of_answer(answer_id).first
-    question_of_answer && question_of_answer.ending_date < Time.zone.now
+    question_of_answer&.ended?
   end
 
   def other_votes
