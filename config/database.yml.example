@@ -3,20 +3,17 @@ default: &default
   encoding: unicode
   pool: 5
   timeout: 5000
+  host: localhost
+  username: moss-user
+  password: password
 
 development:
   <<: *default
   database: moss-back-dev
-  host: localhost
-  username: postgres
-  password: postgres
 
 test:
   <<: *default
   database: moss-back-test
-  host: localhost
-  username: postgres
-  password: postgres
 
 production:
   <<: *default

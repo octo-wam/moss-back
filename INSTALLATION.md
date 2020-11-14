@@ -1,0 +1,106 @@
+# Installation
+
+## Cloner le dépôt
+
+Si vous avez bien renseigné une [clé SSH dans vos paramètres](https://github.com/settings/keys) GitHub, vous pouvez cloner le dépôt de Moss Back comme suit :
+
+```shell script
+git clone git@github.com:octo-wam/moss-back.git
+```
+
+## Installer Ruby et ses "gems"
+
+Il faut tout d'abord installer la bonne version de Ruby.
+
+Il est conseillé de l'installer via RVM (Ruby Version Manager) qui permet de gérer et installer facilement plusieurs versions du langage. [Lien d'installation de RVM](https://rvm.io/rvm/install).
+
+Une fois RVM possédé, il faut donc installer la version de Ruby indiquée dans le fichier `Gemfile`. S'il s'agit de `ruby '2.7.0'` il faut alors lancer la commande suivante : `rvm install "ruby-2.7.0"`.
+
+Enfin, il faut installer Ruby on Rails et les autres dépendances du projet (qui sont listées dans le fichier `Gemfile`). Cela se fait en deux étapes :
+- Installer bundler pour gérer toutes les gems (dépendances) : `gem install bundler`
+- Installer le reste des dépendances via bundler : `bundle install`
+
+## Mettre en place une base de données
+
+### a) Installer et démarrer PostgreSQL
+
+PostgreSQL est le SGBD utilisé pour le projet. Il faut donc tout d'abord l'avoir installé sur sa machine.
+
+Via Homebrew : `brew install postgres`
+
+Une fois installé, il est possible de démarrer le démon postgres de deux manières :
+- A la demande : `pg_ctl -D /usr/local/var/postgres start` (à refaire à chaque démarrage de la machine)
+- En automatique : `brew services start postgresql` (sera toujours en fonctionnement tant qu'il n'est pas arrêté par `brew services stop postgresql`)
+
+### b) Créer un utilisateur et le lier au projet
+
+Il faut créer un premier utilisateur PostgreSQL pour accéder à cette base, ayant pour username `moss-user` et pour mot de passe celui que vous allez renseigner :
+
+```shell script
+# "-s" crée un superuser
+# "-P" demande de renseigner un mot de passe
+createuser -s -r moss-user -P
+```
+
+Ces username et mot de passe de base de données sont à renseigner dans un fichier `config/database.yml` qu'il faut créer en s'inspirant du fichier d'exemple `config/database.yml.example`.
+
+### c) Mettre en place le schéma de base
+
+Pour créer le schéma de base de données "moss" et effectuer les migrations qui sont dans le dossier `db/migrate/`, il faut lancer les deux commandes suivantes :
+
+```shell script
+rails db:create
+rails db:migrate
+```
+
+Il est possible de remplir la base de données avec des données de test contenues dans `db/seeds.rb` :
+
+```shell script
+rails db:seed
+```
+
+## Variables d'environnement
+
+Les variables d'environnement du projet (URLs, credentials, ...) sont à renseigner dans un fichier `.env` à la racine. Il est possible de créer ce fichier depuis le fichier .env.example.
+
+```shell script
+cp .env.example .env
+```
+
+Vous aurez besoin de remplir tout ou partie de ces variables d'environnement en fonction de ce que vous souhaiterez tester en local. Par exemple :
+- Les variables GOOGLE_* pour utiliser la connexion Oauth2 Google
+- Les variables MAILTRAP_* pour tester l'envoi d'e-mails
+- La variable FRONT_BASE_URL qui indique l'URL du projet moss-front
+- etc.
+
+S'il vous manque une variable importante pour le développement, demandez-la à la team Moss.
+
+Ce fichier `.env` est notamment lu par la library `foreman` (voir ci-dessous). Ne démarrez donc pas le serveur avec `rails s` !
+
+## Tout est en place !
+
+Vous pouvez vérifier que les tests automatisés se lancent :
+
+```shell script
+rspec
+```
+
+Vous pouvez démarrer le serveur en local avec la commande ci-dessous puis voir la page d'accueil sur [http://localhost:3000](http://localhost:3000) (en fonction du port renseigné dans `.env`).
+
+```shell script
+foreman start
+```
+
+## Se connecter avec Google
+
+Pour se connecter à la plateforme, il faut que les variables GOOGLE_* soient renseignées dans le fichier `.env`.
+
+Il faut ensuite cliquer sur ce lien : http://localhost:3000/auth/google_oauth2/callback
+
+(TODO: la suite est à vérifier / tester)
+
+Pour cela, il faut passer par la console Rails :
+
+Le login Google est désormais fonctionnel !
+
+Si vous avez une erreur "redirect_uri_mismatch", vérifiez que vous utilisez bien le port 3000 dans `.env` (seul port autorisé dans la console Google Oauth).
