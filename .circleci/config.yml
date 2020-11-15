@@ -53,12 +53,12 @@ jobs:
       - ruby/bundle-install
       - run:
           environment:
-            DATABASE_URL: "postgres://moss_back_test@localhost:5432/moss_back_test"
+            DATABASE_URL: "postgres://postgres:postgres@localhost:5432/moss-back-test"
           name: Create DB
           command: bundle exec rake db:create db:schema:load db:migrate RAILS_ENV=test
       - run:
           environment:
-            DATABASE_URL: "postgres://moss_back_test@localhost:5432/moss_back_test"
+            DATABASE_URL: "postgres://postgres:postgres@localhost:5432/moss-back-test"
           name: Run Tests, Split by Timings
           command: |
             bundle exec rspec --profile 10 \
