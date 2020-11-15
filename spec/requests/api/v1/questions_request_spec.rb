@@ -30,6 +30,26 @@ describe 'Questions', type: :request do
       end
     end
 
+    context 'request without sort parameter is created_at:desc by default' do
+      let!(:params) { {} }
+
+      let!(:recent_question) { create :question, created_at: 1.hour.ago }
+      let!(:old_question) { create :question, created_at: 1.year.ago }
+
+      before do
+        question.update created_at: 1.day.ago
+
+        get '/api/v1/questions', params: params, headers: headers_of_logged_in_user
+      end
+
+      it 'returns an array with three questions sorted by date desc' do
+        parsed_body = JSON.parse(response.body)
+        question_ids = parsed_body.map { |q| q['id'] }
+
+        expect(question_ids).to eq([recent_question.id, question.id, old_question.id])
+      end
+    end
+
     context 'request with sort=created_at parameter' do
       let!(:params) { { sort: 'created_at' } }
 
@@ -47,26 +67,6 @@ describe 'Questions', type: :request do
         question_ids = parsed_body.map { |q| q['id'] }
 
         expect(question_ids).to eq([old_question.id, question.id, recent_question.id])
-      end
-    end
-
-    context 'request with sort=created_at:desc parameter' do
-      let!(:params) { { sort: 'created_at:desc' } }
-
-      let!(:recent_question) { create :question, created_at: 1.hour.ago }
-      let!(:old_question) { create :question, created_at: 1.year.ago }
-
-      before do
-        question.update created_at: 1.day.ago
-
-        get '/api/v1/questions', params: params, headers: headers_of_logged_in_user
-      end
-
-      it 'returns an array with three questions sorted by date desc' do
-        parsed_body = JSON.parse(response.body)
-        question_ids = parsed_body.map { |q| q['id'] }
-
-        expect(question_ids).to eq([recent_question.id, question.id, old_question.id])
       end
     end
 
