@@ -16,6 +16,6 @@ class Question < ApplicationRecord
   end
 
   def self.sort_regex
-    %r{^(created_at|title)(:(asc|desc))?(,(created_at|title)(:(asc|desc))?)*$}
+    /^(created_at|title)(:(asc|desc))?(,(created_at|title)(:(asc|desc))?)*$/
   end
 end

@@ -11,7 +11,7 @@ describe 'Questions', type: :request do
       let!(:answer) { create :answer, question: question }
 
       before do
-        get '/api/v1/questions',  headers: headers_of_logged_in_user
+        get '/api/v1/questions', headers: headers_of_logged_in_user
       end
 
       it 'returns an ok HTTP status' do
@@ -74,8 +74,12 @@ describe 'Questions', type: :request do
       let!(:params) { { sort: 'created_at:desc,title' } }
 
       let(:identical_date) { 1.hour.ago.to_date }
-      let!(:question_starting_with_w) { create :question, title: 'What is the main purpose of a lockdown?', created_at: identical_date }
-      let!(:question_starting_with_o) { create :question, title: 'On which date will we be allowed to go out?', created_at: identical_date }
+      let!(:question_starting_with_w) do
+        create :question, title: 'What is the main purpose of a lockdown?', created_at: identical_date
+      end
+      let!(:question_starting_with_o) do
+        create :question, title: 'On which date will we be allowed to go out?', created_at: identical_date
+      end
 
       before do
         question.update created_at: 1.day.ago
