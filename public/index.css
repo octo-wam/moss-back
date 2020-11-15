@@ -1,0 +1,75 @@
+:root {
+    --font-primary: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;;
+
+    --color-white: #fbfcff;
+    --color-black: #000;
+    --color-gray: #484c62;
+
+    --color-header: var(--color-white);
+    --color-card: var(--color-white);
+    --color-background-gradient: linear-gradient(-130deg, #2a5298, #1e3c72);
+    --color-text-title: var(--color-gray);
+    --color-text: var(--color-black);
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-family: var(--font-primary);
+    color: var(--color-text);
+    font-size: 1.6rem;
+    margin: 0;
+}
+
+main {
+    flex: 1;
+    overflow-y: auto;
+    background: var(--color-background-gradient);
+}
+
+.app-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: auto;
+}
+
+.page-content {
+    padding: 5rem 0;
+    width: 96%;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.header-layout {
+    background: var(--color-header);
+    padding: 1.5rem 0;
+}
+
+.header-layout > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+}
+
+.logo {
+    width: 8rem;
+}
+
+.card {
+    position: relative;
+    background: var(--color-card);
+    padding: 2.5rem;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.29);
+    border-radius: 4px;
+}
+
+.title {
+    color: var(--color-text-title);
+    font-weight: bold;
+    font-size: 2rem;
+}
