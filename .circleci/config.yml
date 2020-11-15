@@ -1,6 +1,8 @@
-# Ruby CircleCI 2.0 configuration file
+# Ruby CircleCI 2.1 configuration file
 #
-# Check https://circleci.com/docs/2.0/language-ruby/ for more details
+# Check https://circleci.com/docs/2.0/ruby/ for more details
+#
+version: 2.1
 
 orbs:
   ruby: circleci/ruby@0.1.2 # Ruby orb registry: https://circleci.com/orbs/registry/orb/circleci/ruby
@@ -35,52 +37,55 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-
+      - *bundle_restore_cache
+      - *bundle_install
+      - *bundle_save_cache
+  test:
+    <<: *defaults
+    parallelism: 1
+    steps:
+      - checkout
+      - *bundle_restore_cache
+      - *bundle_install
       - run:
           name: Which bundler?
           command: bundle -v
-
-      # Restore bundle cache: https://circleci.com/docs/2.0/caching/
-      - restore_cache:
-          keys:
-            - rails-moss-bundle-v1-{{ checksum "Gemfile.lock" }}
-            - rails-moss-bundle-v1-
-
-      - run: # Install Ruby dependencies
-          name: Bundle Install
-          command: bundle check --path vendor/bundle || bundle install --deployment
-
-      # Store bundle cache for Ruby dependencies
-      - save_cache:
-          key: rails-moss-bundle-v1-{{ checksum "Gemfile.lock" }}
-          paths:
-            - vendor/bundle
-
+      - ruby/bundle-install
+      - run:
+          environment:
+            DATABASE_URL: "postgres://moss_back_test@localhost:5432/moss_back_test"
+          name: Create DB
+          command: bundle exec rake db:create db:schema:load db:migrate RAILS_ENV=test
+      - run:
+          environment:
+            DATABASE_URL: "postgres://moss_back_test@localhost:5432/moss_back_test"
+          name: Run Tests, Split by Timings
+          command: |
+            bundle exec rspec --profile 10 \
+              --format RspecJunitFormatter \
+              --out ~/test-results/rspec/results.xml \
+              --format progress \
+              $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
+      - store_test_results:
+          path: ~/test-results
+  lint:
+    <<: *defaults
+    steps:
+      - checkout
+      - *bundle_restore_cache
+      - *bundle_install
       - run:
           name: Run lint tasks
           command: bundle exec rubocop
 
-      - run:
-          name: Wait for DB
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
-
-      - run:
-          name: Create database
-          command: bin/rails db:create RAILS_ENV=test
-
-      - run:
-          name: Database setup
-          command: bin/rails db:schema:load --trace
-
-      - run:
-          name: Run rspec in parallel
-          command: |
-            bundle exec rspec --profile 10 \
-                              --format RspecJunitFormatter \
-                              --out test_results/rspec.xml \
-                              --format progress \
-                              $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
-
-      # Save test results for timing analysis
-      - store_test_results: # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
-          path: test_results
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+      - lint:
+          requires:
+            - build
