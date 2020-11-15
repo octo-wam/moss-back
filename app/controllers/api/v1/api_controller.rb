@@ -7,6 +7,7 @@ module Api
 
       rescue_from ActiveRecord::RecordInvalid, with: :bad_request
       rescue_from ActiveRecord::ReadOnlyRecord, with: :bad_request
+      rescue_from ActiveRecord::StatementInvalid, with: :bad_request
       rescue_from ActionController::BadRequest, with: :bad_request
 
       def authenticate

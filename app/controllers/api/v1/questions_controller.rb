@@ -3,25 +3,8 @@
 module Api
   module V1
     class QuestionsController < ApiController
-      AUTHORIZED_SORT_FIELDS = %w(created_at title)
-      DEFAULT_SORT_FIELD = 'created_at'
-      AUTHORIZED_SORT_DIRECTIONS = %w(asc desc)
-
       def index
-        @questions = Question.includes(:answers, :user)
-        if params[:sort]
-          # TODO: Move in a use case
-          sort_segments = params[:sort].split(',')
-          sort_segments.each do |sort_segment|
-            next if sort_segment.blank?
-            sort_field, sort_direction = sort_segment.split(':')
-            sort_field ||= DEFAULT_SORT_FIELD
-            next unless AUTHORIZED_SORT_FIELDS.include? sort_field
-            sort_direction ||= 'asc'
-            next unless AUTHORIZED_SORT_DIRECTIONS.include? sort_direction
-            @questions = @questions.order(sort_field => sort_direction)
-          end
-        end
+        @questions = Question.includes(:answers, :user).sorted_by(params[:sort])
       end
 
       def show
