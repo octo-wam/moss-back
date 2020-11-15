@@ -14,7 +14,7 @@ module Api
         raise Unauthorized, '`Authorization` header is missing.' unless bearer
 
         token = bearer.match(/Bearer (.+)/)[1]
-        @decoded_token = JWT.decode(token, ENV['SECRET_KEY_BASE'], true, algorithm: 'HS256').first
+        @decoded_token = JWT.decode(token, ENV.fetch('SECRET_KEY_BASE'), true, algorithm: 'HS256').first
       rescue StandardError => e
         render status: :unauthorized, json: {
           error: 'UNAUTHORIZED',
