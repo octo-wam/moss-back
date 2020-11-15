@@ -71,11 +71,31 @@ Vous aurez besoin de remplir tout ou partie de ces variables d'environnement en 
 - Les variables GOOGLE_* pour utiliser la connexion Oauth2 Google
 - Les variables MAILTRAP_* pour tester l'envoi d'e-mails
 - La variable FRONT_BASE_URL qui indique l'URL du projet moss-front
+- La variable SECRET_KEY_BASE pour qui va encoder l'access token API (voir ci-dessous)
 - etc.
 
 S'il vous manque une variable importante pour le développement, demandez-la à la team Moss.
 
-Ce fichier `.env` est notamment lu par la library `foreman` (voir ci-dessous). Ne démarrez donc pas le serveur avec `rails s` !
+Ce fichier `.env` est notamment lu par la library `dotenv-rails` (voir ci-dessous).
+
+### Générer une clé secrète
+
+Pour remplir la variable SECRET_KEY_BASE, vous pouvez générer une chaîne aléatoire de 64 caractères alphanumériques en passant par la console Rails :
+
+```shell script
+rails c
+```
+
+Dans la console Rails, vous pouvez effectuer des instructions Ruby :
+
+```ruby
+SecureRandom.hex(32)
+# => 9a0253058823e04a7a9bfd06eb47e67287bf54f7cd0a5402db9986adbe877746
+# Il suffit de copier cette string dans le fichier .env
+
+# Pour quitter la console
+quit
+```
 
 ## Tout est en place !
 
@@ -88,7 +108,9 @@ rspec
 Vous pouvez démarrer le serveur en local avec la commande ci-dessous puis voir la page d'accueil sur [http://localhost:3001](http://localhost:3001) (en fonction du port renseigné dans `.env`).
 
 ```shell script
-foreman start
+rails server
+# ou
+rails s
 ```
 
 ## Se connecter avec Google

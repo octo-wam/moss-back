@@ -5,7 +5,7 @@ Moss Back
 
 Moss est l'outil de décision de la League WAM chez OCTO Technology.
 
-Ce projet concerne la partie API/back de l'application Moss, développée avec le framework Ruby on Rails.
+Ce projet correspond à la partie API/back de l'application Moss, développée avec le framework Ruby on Rails.
 
 Deux applications Moss consomment cette API :
 - Une [application front-end](https://github.com/octo-wam/moss-front)
@@ -17,16 +17,20 @@ Voir [INSTALLATION.md](INSTALLATION.md).
 
 ## Démarrer le serveur local
 
-Nous utilisons Foreman pour lancer un ou plusieurs process (en se basant sur le fichier `Procfile`). Pour démarrer le serveur, entrer la commande suivante :
+Pour démarrer le serveur, entrer la commande suivante :
 
 ```shell script
-foreman start
+rails server
+# ou
+rails s
 ```
 
-Si besoin de lancer une console pour des actions qui nécessitent l'appel aux variables d'environnement :
+Si besoin de lancer une console :
 
 ```shell script
-foreman run rails c
+rails console
+# ou
+rails c
 ```
 
 Pour se connecter à Google et recevoir un access_token API : http://localhost:3001/auth/google_oauth2

@@ -14,6 +14,12 @@ Moss Back possède deux environnements, hébergés sur Heroku. L'accès aux pane
 - URL de l'application : https://octo-moss-back.herokuapp.com
 - Panel d'admin : https://dashboard.heroku.com/apps/octo-moss-back
 
+## Déploiement continu
+
+GitHub et Heroku sont liés de telle sorte que __dès qu'une PR est mergée sur GitHub, elle est automatiquement déployée en production sur Heroku__ ! Il n'y a donc rien à faire manuellement.
+
+Cependant, dans certains cas, il peut être nécessaire de faire certaines actions manuellement. La suite de ce document détaille comment faire cela.
+
 ## Utiliser le CLI Heroku
 
 Il est possible de faire des actions sur ces environnements en ligne de commande en utilisant le CLI Heroku.
@@ -41,7 +47,7 @@ heroku logs -t -a octo-moss-back
 Les rake tasks peuvent être déclenchées manuellement :
 
 ```shell script
-heroku run rails ma_tache -a octo-moss-back-demo
+heroku run rails ma_task_1 -a octo-moss-back-demo
 ```
 
 ## Configurer ses environnements git distants

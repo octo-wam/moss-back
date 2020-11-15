@@ -1,16 +1,16 @@
 # Politique de Contribution
 
-Moss est né en novembre 2019, au cours du Kick-off de la "League WAM".
+Moss est né en novembre 2019, au cours du kick-off de la League WAM chez OCTO Technology.
 
-Tous les Octos peuvent participer au développement de Moss Back, tant que les développements sont validés et relus par l'équipe du projet.
+Tout le monde peut participer au développement de Moss Back, tant que les développements sont validés et relus par l'équipe du projet.
 
 Voici quelques règles de développement qui sont pour la plupart des standards chez OCTO Technology.
 
 ## Règles générales
 
-### Consulter les boards
+### Consulter le board
 
-Le [Projet Github](https://github.com/octo-wam/moss-back/projects/1) liste un grand nombre de tâches à réaliser, ainsi que la page des Issues.
+Le [Projet Github](https://github.com/octo-wam/moss-back/projects/1) ainsi que la [liste des Issues](https://github.com/octo-wam/moss-back/issues) contiennent un grand nombre de tâches à réaliser.
 
 Avant de partir sur un sujet, il est important d'en discuter avec l'équipe du projet pour s'assurer que le besoin est toujours existant et avoir quelques pistes pour démarrer les développements.
 
@@ -20,9 +20,9 @@ Au début des développements, il faut créer une _feature-branch_ (`git branch 
 
 Avant d'envoyer du code sur le serveur distant (`git push`), il faut penser à lancer les tests automatisés (cf ci-dessous) pour s'assurer qu'il n'y a aucune régression. Et, bien sûr, réparer les tests qui échouent.
 
-Une fois la branche poussée sur le serveur distant, il faut [créer une Pull Request](https://github.com/octo-wam/moss-back/compare) sur GitHub. Cela crée notamment une pipeline de tests automatisés (CI) et permet à la team Moss Back de relire le code écrit (code review).
+Une fois la branche poussée sur le serveur distant, il faut [créer une Pull Request](https://github.com/octo-wam/moss-back/compare) sur GitHub. Cela crée notamment une pipeline de tests automatisés (CI/CD) et permet à la team Moss Back de relire le code écrit (code review).
  
- Une fois la Pull Request validée et recettée par la team, elle sera mergée sur master puis mise en production.
+Une fois la Pull Request validée et recettée par la team, elle sera mergée sur master __ce qui entrainera aussitôt sa mise en production__ !
   
 ## Tests automatisés
 
