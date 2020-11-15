@@ -10,6 +10,26 @@ RSpec.describe Vote, type: :model do
   end
 
   describe 'validations' do
+    describe 'it is not possible to vote for an ended question' do
+      let!(:answer) { create :answer, question: question }
+
+      context 'question is ended' do
+        let(:question) { create :question, ending_date: 1.hour.ago }
+
+        let(:vote) { build :vote, answer: answer }
+
+        it { expect(vote.valid?).to be false }
+      end
+
+      context 'question is not ended' do
+        let(:question) { create :question, ending_date: 1.hour.from_now }
+
+        let(:vote) { build :vote, answer: answer }
+
+        it { expect(vote.valid?).to be true }
+      end
+    end
+
     describe 'a user cannot vote twice neither for the same answer nor for the same question' do
       let(:question) { create :question }
       let(:first_answer) { create :answer, question: question }
