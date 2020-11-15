@@ -10,9 +10,10 @@ defaults: &defaults
     - image: circleci/ruby:2.7.2-browsers
     - image: circleci/postgres:11.5
       environment:
-        POSTGRES_USER: moss_back_test
-        POSTGRES_PASSWORD: moss_back_test
-        POSTGRES_DB: moss_back_test
+        POSTGRES_DB: moss-back-test
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+        SECRET_KEY_BASE: 4e9d18683db85ddb440df081dc1aae1d
 
 bundle_restore_cache: &bundle_restore_cache
   restore_cache:
