@@ -15,6 +15,8 @@ defaults: &defaults
         POSTGRES_DB: moss-back-test
         POSTGRES_USER: postgres
         POSTGRES_PASSWORD: postgres
+        FRONT_BASE_URL: http://moss-front
+        APPLICATION_EMAIL_ADDRESS: testemail@octo.com
         SECRET_KEY_BASE: 4e9d18683db85ddb440df081dc1aae1d
 
 bundle_restore_cache: &bundle_restore_cache
