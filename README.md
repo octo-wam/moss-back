@@ -29,7 +29,7 @@ Si besoin de lancer une console pour des actions qui nécessitent l'appel aux va
 foreman run rails c
 ```
 
-Pour se connecter à Google et recevoir un access_token API : http://localhost:3000/auth/google_oauth2/callback
+Pour se connecter à Google et recevoir un access_token API : http://localhost:3001/auth/google_oauth2
 
 ## Tests automatisés
 

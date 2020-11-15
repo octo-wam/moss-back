@@ -85,7 +85,7 @@ Vous pouvez vérifier que les tests automatisés se lancent :
 rspec
 ```
 
-Vous pouvez démarrer le serveur en local avec la commande ci-dessous puis voir la page d'accueil sur [http://localhost:3000](http://localhost:3000) (en fonction du port renseigné dans `.env`).
+Vous pouvez démarrer le serveur en local avec la commande ci-dessous puis voir la page d'accueil sur [http://localhost:3001](http://localhost:3001) (en fonction du port renseigné dans `.env`).
 
 ```shell script
 foreman start
@@ -95,12 +95,6 @@ foreman start
 
 Pour se connecter à la plateforme, il faut que les variables GOOGLE_* soient renseignées dans le fichier `.env`.
 
-Il faut ensuite cliquer sur ce lien : http://localhost:3000/auth/google_oauth2/callback
+Il faut ensuite cliquer sur ce lien : http://localhost:3001/auth/google_oauth2
 
-(TODO: la suite est à vérifier / tester)
-
-Pour cela, il faut passer par la console Rails :
-
-Le login Google est désormais fonctionnel !
-
-Si vous avez une erreur "redirect_uri_mismatch", vérifiez que vous utilisez bien le port 3000 dans `.env` (seul port autorisé dans la console Google Oauth).
+Si vous avez une erreur "redirect_uri_mismatch", vérifiez que vous utilisez bien le port 3001 dans `.env` (seul port autorisé dans la console Google Oauth).
