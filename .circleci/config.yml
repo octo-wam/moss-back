@@ -54,7 +54,7 @@ jobs:
           environment:
             DATABASE_URL: "postgres://postgres:postgres@localhost:5432/moss-back-test"
           name: Create DB
-          command: bundle exec rake db:create db:schema:load db:migrate RAILS_ENV=test
+          command: bundle exec rails db:create db:schema:load db:migrate RAILS_ENV=test
       - run:
           environment:
             FRONT_BASE_URL: http://moss-front

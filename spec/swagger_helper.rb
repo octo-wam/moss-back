@@ -16,18 +16,21 @@ RSpec.configure do |config|
   # document below. You can override this behavior by adding a swagger_doc tag to the
   # the root example_group in your specs, e.g. describe '...', swagger_doc: 'v2/swagger.json'
   config.swagger_docs = {
-    'v1/swagger.yaml' => {
+    'v1/swagger.json' => {
       swagger: '2.0',
       info: {
-        title: 'API MOSS',
+        title: 'API de MOSS',
         version: 'v1',
-        description: "Première version de l'API MOSS"
+        description: "API de l'application sociocratique [MOSS](https://octo-moss.netlify.app), " \
+                     "permettant d'aboutir à des décisions de groupe."
       },
       securityDefinitions: {
         accessToken: {
+          # Pas vraiment une clé d'API mais c'est une manière simple de renseigner un Bearer token dans Swagger
           type: :apiKey,
           name: 'Authorization',
-          description: 'Connexion avec l\'Access (Bearer) Token',
+          description: 'Access Token à récupérer après [login Google ici](/auth/google_oauth2). ' \
+                       'Pensez à rajouter "Bearer " avant le token !',
           in: :header
         }
       }
@@ -38,7 +41,7 @@ RSpec.configure do |config|
   # The swagger_docs configuration option has the filename including format in
   # the key, this may want to be changed to avoid putting yaml in json files.
   # Defaults to json. Accepts ':json' and ':yaml'.
-  config.swagger_format = :yaml
+  config.swagger_format = :json
 
   config.include Request::SwaggerAccessTokenHelper, type: :request
 end

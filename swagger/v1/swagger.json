@@ -1,0 +1,465 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "API de MOSS",
+    "version": "v1",
+    "description": "API de l'application sociocratique [MOSS](https://octo-moss.netlify.app), permettant d'aboutir à des décisions de groupe."
+  },
+  "securityDefinitions": {
+    "accessToken": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "description": "Access Token à récupérer après [login Google ici](/auth/google_oauth2). Pensez à rajouter \"Bearer \" avant le token !",
+      "in": "header"
+    }
+  },
+  "paths": {
+    "/api/v1/questions": {
+      "get": {
+        "summary": "Récupérer la liste des questions",
+        "tags": [
+          "Questions"
+        ],
+        "security": [
+          {
+            "accessToken": [
+
+            ]
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Questions trouvées",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "endingDate": {
+                    "type": "string",
+                    "format": "datetime"
+                  },
+                  "answers": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "title": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "title",
+                        "description"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "id",
+                  "title",
+                  "description",
+                  "endingDate",
+                  "answers"
+                ]
+              }
+            }
+          },
+          "401": {
+            "description": "Non autorisé"
+          }
+        }
+      },
+      "post": {
+        "summary": "Créer une question",
+        "tags": [
+          "Questions"
+        ],
+        "security": [
+          {
+            "accessToken": [
+
+            ]
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "question",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "endingDate": {
+                  "type": "string",
+                  "format": "datetime"
+                },
+                "answers": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "title": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "title",
+                      "description"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "id",
+                "title",
+                "description",
+                "endingDate",
+                "answers"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Question créée"
+          },
+          "400": {
+            "description": "Mauvaise requête"
+          },
+          "401": {
+            "description": "Non autorisé"
+          }
+        }
+      }
+    },
+    "/api/v1/questions/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "type": "string",
+          "description": "Identifiant de la question",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Récupérer une question",
+        "tags": [
+          "Questions"
+        ],
+        "security": [
+          {
+            "accessToken": [
+
+            ]
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Question trouvée",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "endingDate": {
+                  "type": "string",
+                  "format": "datetime"
+                },
+                "answers": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "title",
+                      "description"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "id",
+                "title",
+                "description",
+                "endingDate",
+                "answers"
+              ]
+            }
+          },
+          "401": {
+            "description": "Non autorisé"
+          },
+          "404": {
+            "description": "Question non trouvée"
+          }
+        }
+      }
+    },
+    "/api/v1/me": {
+      "get": {
+        "summary": "Récupérer des informations sur l'utilisateur courant",
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "accessToken": [
+              "email",
+              "profile"
+            ]
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Utilisateur trouvé",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "email"
+              ]
+            }
+          },
+          "401": {
+            "description": "Non autorisé"
+          }
+        }
+      }
+    },
+    "/api/v1/questions/{id}/votes": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "type": "string",
+          "description": "Identifiant de la question",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Récupérer la liste des votes pour une question",
+        "tags": [
+          "Votes"
+        ],
+        "security": [
+          {
+            "accessToken": [
+
+            ]
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Votes trouvés",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "answerId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "user": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "name"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "answerId",
+                  "user"
+                ]
+              }
+            }
+          },
+          "401": {
+            "description": "Non autorisé"
+          }
+        }
+      },
+      "post": {
+        "summary": "Créer un vote",
+        "tags": [
+          "Votes"
+        ],
+        "security": [
+          {
+            "accessToken": [
+
+            ]
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "vote",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "answerId": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "required": [
+                "id",
+                "answerId"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Vote créé"
+          },
+          "400": {
+            "description": "Mauvaise requête"
+          },
+          "401": {
+            "description": "Non autorisé"
+          },
+          "404": {
+            "description": "Non trouvé"
+          }
+        }
+      },
+      "put": {
+        "summary": "Mettre à jour un vote",
+        "tags": [
+          "Votes"
+        ],
+        "security": [
+          {
+            "accessToken": [
+
+            ]
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "vote",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "answerId": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "required": [
+                "id",
+                "answerId"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Vote mis à jour"
+          },
+          "400": {
+            "description": "Mauvaise requête"
+          },
+          "401": {
+            "description": "Non autorisé"
+          },
+          "404": {
+            "description": "Non trouvé"
+          }
+        }
+      }
+    }
+  }
+}
