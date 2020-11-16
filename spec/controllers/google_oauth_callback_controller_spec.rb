@@ -5,7 +5,6 @@ require 'rails_helper'
 describe GoogleOauthCallbackController, type: :controller do
   let(:controller) { described_class.new }
 
-<<<<<<< HEAD
   describe 'front_app_url_with_token' do
     subject(:front_app_url) { controller.send(:front_app_url_with_token, request_env) }
 
@@ -40,7 +39,10 @@ describe GoogleOauthCallbackController, type: :controller do
 
       it 'returns an URL that is not redirect_to query param' do
         expect(front_app_url).to eq 'https://moss-front.fr/#access_token=my-access-token'
-=======
+      end
+    end
+  end
+
   describe 'upsert_user' do
     subject(:upsert_user) { controller.send(:upsert_user) }
 
@@ -86,7 +88,6 @@ describe GoogleOauthCallbackController, type: :controller do
         expect(last_user.name).to eq 'Jean Paul'
         expect(last_user.email).to eq 'jean.paul@email.com'
         expect(last_user.photo).to eq 'https://photos.fr/jean-paul.jpg'
->>>>>>> 740dc14... Some code review & Add user model to prevent duplicates of user info across the app
       end
     end
   end
