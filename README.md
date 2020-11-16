@@ -27,7 +27,7 @@ Or :
 
 ## Start server
 
-`foreman start`
+`rails s`
 
 ## Google Auth
 

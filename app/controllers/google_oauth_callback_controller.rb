@@ -21,7 +21,6 @@ class GoogleOauthCallbackController < ApplicationController
     render text: 'You must be part of OCTO Technology' unless hosted_domain == 'octo.com'
   end
 
-  # TODO: Change SECRET_KEY_BASE to invalidate tokens on next deployment
   def upsert_user
     user = User.find_or_initialize_by(id: @auth_info['extra']['raw_info']['sub'])
     user.assign_attributes(
