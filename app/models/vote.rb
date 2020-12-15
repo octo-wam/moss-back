@@ -13,8 +13,6 @@ class VoteValidator < ActiveModel::Validator
 end
 
 class Vote < ApplicationRecord
-  # TODO: Delete user_name attribute on next deployment
-
   belongs_to :user
   belongs_to :answer
 

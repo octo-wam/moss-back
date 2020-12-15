@@ -5,8 +5,9 @@ if vote
 
   json.answerId vote.answer_id
   json.user do
-    json.id vote.user_id
-    json.name vote.user.name
-    json.photo vote.user.photo
+    json.extract! vote.user,
+                  :id,
+                  :name,
+                  :photo
   end
 end

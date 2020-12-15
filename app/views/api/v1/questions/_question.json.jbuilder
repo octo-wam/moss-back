@@ -8,9 +8,10 @@ if question
 
   json.endingDate question.ending_date
   json.user do
-    json.id question.user_id
-    json.name question.user.name
-    json.photo question.user.photo
+    json.extract! question.user,
+                  :id,
+                  :name,
+                  :photo
   end
 
   json.answers do

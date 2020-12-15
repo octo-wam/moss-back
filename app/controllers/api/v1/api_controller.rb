@@ -3,7 +3,6 @@
 module Api
   module V1
     class ApiController < ApplicationController
-      attr_reader :decoded_token
       before_action :authenticate
 
       rescue_from ActiveRecord::RecordInvalid, with: :bad_request

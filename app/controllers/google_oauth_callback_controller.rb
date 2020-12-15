@@ -3,19 +3,12 @@
 class GoogleOauthCallbackController < ApplicationController
   def callback
     @google_oauth2_response = request.env['omniauth.auth']
+    validate_domain
     upsert_user
     redirect_to front_app_url_with_token(request.env)
   end
 
   private
-
-  def front_app_url_with_token(env)
-    if env['omniauth.params']['redirect_to'].start_with? ENV['FRONT_BASE_URL']
-      front_app_url = env['omniauth.params']['redirect_to']
-    end
-    front_app_url ||= ENV['FRONT_BASE_URL']
-    "#{front_app_url}#access_token=#{token}"
-  end
 
   def validate_domain
     hosted_domain = @google_oauth2_response['extra']['raw_info']['hd']
@@ -30,6 +23,14 @@ class GoogleOauthCallbackController < ApplicationController
       photo: @google_oauth2_response['extra']['raw_info']['picture']
     )
     user.save!
+  end
+
+  def front_app_url_with_token(env)
+    if env['omniauth.params']['redirect_to'].start_with? ENV['FRONT_BASE_URL']
+      front_app_url = env['omniauth.params']['redirect_to']
+    end
+    front_app_url ||= ENV['FRONT_BASE_URL']
+    "#{front_app_url}#access_token=#{token}"
   end
 
   def token

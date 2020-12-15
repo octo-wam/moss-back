@@ -21,9 +21,9 @@ module Api
 
       def create_question
         @question = Question.new(question_params)
-        @question.user = current_user
         raise ActionController::BadRequest, 'Answers should be filled' if @question.answers.empty?
 
+        @question.user = current_user
         @question.save!
       end
 
