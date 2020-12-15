@@ -73,7 +73,7 @@ Shoulda::Matchers.configure do |config|
   end
 end
 
-def current_user
+def current_user_token
   {
     'name' => 'Test User',
     'email' => 'testuser@octo.com',
@@ -84,10 +84,15 @@ def current_user
 end
 
 def save_current_user
-  before { create :user, id: current_user['sub'], name: current_user['name'], photo: current_user['photo'] }
+  before do
+    create :user,
+           id: current_user_token['sub'],
+           name: current_user_token['name'],
+           photo: current_user_token['photo']
+  end
 end
 
 def headers_of_logged_in_user
-  allow(JWT).to receive(:decode).and_return([current_user])
+  allow(JWT).to receive(:decode).and_return([current_user_token])
   { AUTHORIZATION: 'Bearer WhateverToken' }
 end

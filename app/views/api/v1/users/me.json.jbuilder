@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-if @current_user
-  json.id @current_user['sub']
-  json.name @current_user['name']
-  json.email @current_user['email']
-  json.photo @current_user['photo']
+if @decoded_token
+  json.id @decoded_token['sub']
+  json.name @decoded_token['name']
+  json.email @decoded_token['email']
+  json.photo @decoded_token['photo']
 end

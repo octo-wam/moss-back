@@ -34,7 +34,7 @@ module Api
 
       def current_user_vote_for_this_question
         question_answers = Answer.where(question_id: @answer.question_id)
-        @vote = Vote.find_by(answer: question_answers, user_id: current_user['sub'])
+        @vote = Vote.find_by(current_user.merge(answer: question_answers))
       end
     end
   end

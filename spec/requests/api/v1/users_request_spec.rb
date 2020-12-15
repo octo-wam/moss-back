@@ -13,9 +13,9 @@ describe 'GET /v1/me', type: :request do
 
   it 'returns information about the current user' do
     parsed_body = JSON.parse(response.body)
-    expect(parsed_body).to eq('id' => current_user['sub'],
-                              'name' => current_user['name'],
-                              'email' => current_user['email'],
-                              'photo' => current_user['photo'])
+    expect(parsed_body).to eq('id' => current_user_token['sub'],
+                              'name' => current_user_token['name'],
+                              'email' => current_user_token['email'],
+                              'photo' => current_user_token['photo'])
   end
 end

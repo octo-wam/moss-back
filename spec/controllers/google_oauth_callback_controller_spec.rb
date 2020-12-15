@@ -47,7 +47,7 @@ describe GoogleOauthCallbackController, type: :controller do
     subject(:upsert_user) { controller.send(:upsert_user) }
 
     let(:auth_info_sub) { '123456789' }
-    let(:auth_info) do
+    let(:google_oauth2_response) do
       {
         'info' => { 'email' => 'jean.paul@email.com', 'name' => 'Jean Paul' },
         'extra' => {
@@ -56,7 +56,7 @@ describe GoogleOauthCallbackController, type: :controller do
       }
     end
 
-    before { controller.instance_variable_set :@auth_info, auth_info }
+    before { controller.instance_variable_set :@google_oauth2_response, google_oauth2_response }
 
     context 'user is not already in the database' do
       it 'creates the user' do
