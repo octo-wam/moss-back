@@ -27,9 +27,7 @@ module Api
       private
 
       def current_user
-        {
-          user_id: @decoded_token['sub']
-        }
+        User.find(@decoded_token['sub'])
       end
 
       def bad_request(error)

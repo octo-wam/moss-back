@@ -88,6 +88,7 @@ def save_current_user
     create :user,
            id: current_user_token['sub'],
            name: current_user_token['name'],
+           email: current_user_token['email'],
            photo: current_user_token['photo']
   end
 end

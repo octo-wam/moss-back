@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 describe 'GET /v1/me', type: :request do
+  save_current_user
+
   before do
     get '/api/v1/me', headers: headers_of_logged_in_user
   end

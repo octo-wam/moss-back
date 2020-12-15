@@ -3,7 +3,9 @@
 module Api
   module V1
     class UsersController < ApiController
-      def index; end
+      def me
+        @current_user = current_user
+      end
     end
   end
 end

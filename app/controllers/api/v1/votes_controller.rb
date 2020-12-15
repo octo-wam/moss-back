@@ -28,13 +28,13 @@ module Api
       end
 
       def create_vote
-        @vote = Vote.create!(current_user.merge(answer: @answer))
+        @vote = Vote.create!(user: current_user, answer: @answer)
         render status: :created
       end
 
       def current_user_vote_for_this_question
         question_answers = Answer.where(question_id: @answer.question_id)
-        @vote = Vote.find_by(current_user.merge(answer: question_answers))
+        @vote = Vote.find_by(user: current_user, answer: question_answers)
       end
     end
   end
