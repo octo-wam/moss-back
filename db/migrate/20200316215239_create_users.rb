@@ -15,8 +15,8 @@ class CreateUsers < ActiveRecord::Migration[5.2]
   end
 
   def down
-    drop_table :users
     remove_column :questions, :user_id
     change_column :votes, :user_id, :string
+    drop_table :users
   end
 end
