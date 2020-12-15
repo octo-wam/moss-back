@@ -3,7 +3,7 @@
 module Api
   module V1
     class ApiController < ApplicationController
-      attr_reader :current_user
+      attr_reader :decoded_token
       before_action :authenticate
 
       rescue_from ActiveRecord::RecordInvalid, with: :bad_request
@@ -15,7 +15,7 @@ module Api
         raise Unauthorized, '`Authorization` header is missing.' unless bearer
 
         token = bearer.match(/Bearer (.+)/)[1]
-        @current_user = JWT.decode(token, ENV['SECRET_KEY_BASE'], true, algorithm: 'HS256').first
+        @decoded_token = JWT.decode(token, ENV['SECRET_KEY_BASE'], true, algorithm: 'HS256').first
       rescue StandardError => e
         render status: :unauthorized, json: {
           error: 'UNAUTHORIZED',
@@ -26,9 +26,9 @@ module Api
 
       private
 
-      def current_user_id
+      def current_user
         {
-          user_id: current_user['sub']
+          user_id: @decoded_token['sub']
         }
       end
 

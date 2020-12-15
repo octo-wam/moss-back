@@ -21,7 +21,7 @@ module Api
 
       def create_question
         @question = Question.new(
-          current_user_id.merge(question_params)
+          current_user.merge(question_params)
         )
         raise ActionController::BadRequest, 'Answers should be filled' if @question.answers.empty?
 

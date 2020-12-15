@@ -28,7 +28,7 @@ module Api
       end
 
       def create_vote
-        @vote = Vote.create!(current_user_id.merge(answer: @answer))
+        @vote = Vote.create!(current_user.merge(answer: @answer))
         render status: :created
       end
 
