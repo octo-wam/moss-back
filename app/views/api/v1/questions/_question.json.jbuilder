@@ -7,6 +7,12 @@ if question
                 :description
 
   json.endingDate question.ending_date
+  json.user do
+    json.extract! question.user,
+                  :id,
+                  :name,
+                  :photo
+  end
 
   json.answers do
     json.array! question.answers, partial: 'api/v1/answers/answer', as: :answer

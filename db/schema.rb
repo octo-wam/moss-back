@@ -10,12 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_08_164222) do
+ActiveRecord::Schema.define(version: 2020_03_16_215239) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
-  enable_extension "unaccent"
   enable_extension "uuid-ossp"
 
   create_table "answers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -31,6 +30,15 @@ ActiveRecord::Schema.define(version: 2019_11_08_164222) do
     t.string "title"
     t.text "description"
     t.datetime "ending_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "user_id"
+  end
+
+  create_table "users", id: :string, force: :cascade do |t|
+    t.string "name"
+    t.string "email"
+    t.string "photo"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

@@ -13,8 +13,10 @@ class VoteValidator < ActiveModel::Validator
 end
 
 class Vote < ApplicationRecord
+  belongs_to :user
   belongs_to :answer
 
+  validates :user_id, presence: true
   validates_with VoteValidator
 
   scope :on_question, ->(question) { joins(answer: :question).where(answers: { question: question }) }

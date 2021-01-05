@@ -5,6 +5,58 @@ require 'rails_helper'
 describe GoogleOauthCallbackController, type: :controller do
   let(:controller) { described_class.new }
 
+  describe 'upsert_user' do
+    subject(:upsert_user) { controller.send(:upsert_user) }
+
+    let(:auth_info_sub) { '123456789' }
+    let(:google_oauth2_response) do
+      {
+        'info' => { 'email' => 'jean.paul@email.com', 'name' => 'Jean Paul' },
+        'extra' => {
+          'raw_info' => { 'sub' => auth_info_sub, 'picture' => 'https://photos.fr/jean-paul.jpg' }
+        }
+      }
+    end
+
+    before { controller.instance_variable_set :@google_oauth2_response, google_oauth2_response }
+
+    context 'user is not already in the database' do
+      it 'creates the user' do
+        expect { upsert_user }.to change(User, :count).by(1)
+      end
+
+      it 'assigns accurate attributes to the new user' do
+        upsert_user
+
+        last_user = User.last
+        expect(last_user.id).to eq auth_info_sub
+        expect(last_user.name).to eq 'Jean Paul'
+        expect(last_user.email).to eq 'jean.paul@email.com'
+        expect(last_user.photo).to eq 'https://photos.fr/jean-paul.jpg'
+      end
+    end
+
+    context 'user is already in the database' do
+      before do
+        create :user, id: auth_info_sub, name: 'Jacques', email: 'jacques@email.com', photo: nil
+        create :user, id: '987654321', name: 'Nabil', email: 'nabil@email.com', photo: nil
+      end
+
+      it 'does not create a user' do
+        expect { upsert_user }.not_to change(User, :count)
+      end
+
+      it 'updates accurate attributes to user (changes Jacques for Jean Paul)' do
+        upsert_user
+
+        authenticated_user = User.find(auth_info_sub)
+        expect(authenticated_user.name).to eq 'Jean Paul'
+        expect(authenticated_user.email).to eq 'jean.paul@email.com'
+        expect(authenticated_user.photo).to eq 'https://photos.fr/jean-paul.jpg'
+      end
+    end
+  end
+
   describe 'front_app_url_with_token' do
     subject(:front_app_url) { controller.send(:front_app_url_with_token, request_env) }
 

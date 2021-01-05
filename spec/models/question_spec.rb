@@ -7,6 +7,7 @@ RSpec.describe Question, type: :model do
     subject(:question) { build :question }
 
     it { expect(question).to have_many :answers }
+    it { expect(question).to belong_to :user }
     it { expect(question).to accept_nested_attributes_for(:answers) }
   end
 
@@ -16,6 +17,7 @@ RSpec.describe Question, type: :model do
     it { is_expected.to validate_presence_of(:title) }
     it { is_expected.to validate_presence_of(:description) }
     it { is_expected.to validate_presence_of(:ending_date) }
+    it { is_expected.to validate_presence_of(:user_id) }
   end
 
   describe '.of_answer' do
