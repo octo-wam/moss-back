@@ -3,7 +3,7 @@
 ## Installing
 
 - [Install rvm](https://rvm.io/rvm/install)
-- Install ruby-2.7.0 : `rvm install "ruby-2.7"`
+- Install ruby-2.7.2 : `rvm install "ruby-2.7"`
 - Install bundler : `gem install bundler`
 - Install postgres :
     - `brew install postgres`
