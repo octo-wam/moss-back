@@ -1,8 +1,21 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'models/concerns/sortable_concern_shared_example'
 
 RSpec.describe Question, type: :model do
+  describe 'sortable_concern' do
+    it_behaves_like 'a model sortable by', 'created_at:asc,title:desc'
+    it_behaves_like 'a model not sortable by', 'updated_at: asc'
+    it_behaves_like 'a model not sortable by', 'updated_at:desc,email:asc'
+
+    describe 'SQL generation' do
+      subject(:sorted_collection) { described_class.sorted_by('created_at:asc,title:desc') }
+
+      it { expect(sorted_collection.to_sql).to end_with 'ORDER BY "questions"."created_at" ASC, LOWER(title) DESC' }
+    end
+  end
+
   describe 'associations' do
     subject(:question) { build :question }
 

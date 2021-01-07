@@ -4,7 +4,7 @@ module Api
   module V1
     class QuestionsController < ApiController
       def index
-        @questions = Question.includes(:answers, :user)
+        @questions = Question.includes(:answers, :user).sorted_by(params[:sort] || 'created_at:desc')
       end
 
       def show

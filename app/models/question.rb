@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Question < ApplicationRecord
+  include SortableConcern
+
   has_many :answers
   belongs_to :user
   accepts_nested_attributes_for :answers
@@ -11,5 +13,9 @@ class Question < ApplicationRecord
 
   def ended?
     ending_date.before?(Time.zone.now)
+  end
+
+  def self.sort_regex
+    /^(created_at|title)(:(asc|desc))?(,(created_at|title)(:(asc|desc))?)*$/
   end
 end
