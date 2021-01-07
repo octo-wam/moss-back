@@ -3,6 +3,9 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
+  mount Rswag::Ui::Engine => '/api/documentation'
+  mount Rswag::Api::Engine => '/api/documentation'
+
   namespace :api do
     namespace :v1, defaults: { content_type: 'application/json', format: :json } do
       resources :questions, only: %i[index show create] do

@@ -12,9 +12,9 @@ defaults: &defaults
     - image: circleci/ruby:2.7.2-browsers
     - image: circleci/postgres:11.5
       environment:
-        POSTGRES_USER: moss_back_test
-        POSTGRES_PASSWORD: moss_back_test
-        POSTGRES_DB: moss_back_test
+        POSTGRES_DB: moss-back-test
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
 
 bundle_restore_cache: &bundle_restore_cache
   restore_cache:
@@ -52,12 +52,15 @@ jobs:
       - ruby/bundle-install
       - run:
           environment:
-            DATABASE_URL: "postgres://moss_back_test@localhost:5432/moss_back_test"
+            DATABASE_URL: "postgres://postgres:postgres@localhost:5432/moss-back-test"
           name: Create DB
-          command: bundle exec rake db:create db:schema:load db:migrate RAILS_ENV=test
+          command: bundle exec rails db:create db:schema:load db:migrate RAILS_ENV=test
       - run:
           environment:
-            DATABASE_URL: "postgres://moss_back_test@localhost:5432/moss_back_test"
+            FRONT_BASE_URL: http://moss-front
+            APPLICATION_EMAIL_ADDRESS: testemail@octo.com
+            SECRET_KEY_BASE: 4e9d18683db85ddb440df081dc1aae1d
+            DATABASE_URL: "postgres://postgres:postgres@localhost:5432/moss-back-test"
           name: Run Tests, Split by Timings
           command: |
             bundle exec rspec --profile 10 \

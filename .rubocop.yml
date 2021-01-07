@@ -5,6 +5,7 @@ AllCops:
   Exclude:
     - "bin/*"
     - "tmp/**/*"
+    - "vendor/**/*"
     - "db/schema.rb"
 
 Layout/LineLength:
@@ -14,6 +15,9 @@ Layout/LineLength:
 Metrics/BlockLength:
   Enabled: false
 
+Style/AsciiComments:
+  Enabled: false
+
 Style/Documentation:
   Enabled: false
 
@@ -21,6 +25,15 @@ RSpec/LetSetup:
   Enabled: false
 
 RSpec/ContextWording:
+  Enabled: false
+
+RSpec/EmptyExampleGroup:
+  Enabled: false
+
+RSpec/ScatteredSetup:
+  Enabled: false
+
+RSpec/MessageChain:
   Enabled: false
 
 RSpec/MultipleExpectations:

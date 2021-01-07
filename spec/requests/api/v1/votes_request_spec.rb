@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'Votes', type: :request do
+describe 'Votes Request', type: :request do
   describe 'GET /v1/questions/:id/votes' do
     let(:user) { create :user }
     let(:question) { create :question }

@@ -16,7 +16,7 @@ gem 'puma', '~> 4.1'
 # gem 'mini_racer', platforms: :ruby
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.5'
+gem 'jbuilder', '~> 2.9.1'
 
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
@@ -30,6 +30,8 @@ gem 'omniauth-google-oauth2'
 
 gem 'jwt'
 gem 'premailer-rails'
+gem 'rswag-api'
+gem 'rswag-ui'
 
 group :development, :test do
   gem 'factory_bot_rails'
@@ -39,6 +41,7 @@ group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'dotenv-rails'
   gem 'rspec_junit_formatter', require: false
+  gem 'rswag-specs'
 end
 
 group :development do
