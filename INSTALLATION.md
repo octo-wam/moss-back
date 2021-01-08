@@ -14,7 +14,7 @@ Il faut tout d'abord installer la bonne version de Ruby.
 
 Il est conseillé de l'installer via RVM (Ruby Version Manager) qui permet de gérer et installer facilement plusieurs versions du langage. [Lien d'installation de RVM](https://rvm.io/rvm/install).
 
-Une fois RVM possédé, il faut donc installer la version de Ruby indiquée dans le fichier `Gemfile`. S'il s'agit de `ruby '2.7.0'` il faut alors lancer la commande suivante : `rvm install "ruby-2.7.0"`.
+Une fois RVM possédé, il faut donc installer la version de Ruby indiquée dans le fichier `Gemfile`. S'il s'agit de `ruby '2.7.2'` il faut alors lancer la commande suivante : `rvm install "ruby-2.7.2"`.
 
 Enfin, il faut installer Ruby on Rails et les autres dépendances du projet (qui sont listées dans le fichier `Gemfile`). Cela se fait en deux étapes :
 - Installer bundler pour gérer toutes les gems (dépendances) : `gem install bundler`
@@ -120,3 +120,5 @@ Pour se connecter à la plateforme, il faut que les variables GOOGLE_* soient re
 Il faut ensuite cliquer sur ce lien : http://localhost:3001/auth/google_oauth2
 
 Si vous avez une erreur "redirect_uri_mismatch", vérifiez que vous utilisez bien le port 3001 dans `.env` (seul port autorisé dans la console Google Oauth).
+
+(L'URL de callback Google est : http://localhost:3000/auth/google_oauth2/callback)
