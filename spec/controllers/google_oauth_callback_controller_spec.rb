@@ -57,8 +57,8 @@ describe GoogleOauthCallbackController, type: :controller do
     end
   end
 
-  describe 'front_app_url_with_token' do
-    subject(:front_app_url) { controller.send(:front_app_url_with_token, request_env) }
+  describe 'redirect_url_allowed?' do
+    subject(:redirect_url_allowed) { controller.send(:redirect_url_allowed?, request_env) }
 
     before do
       ENV['FRONT_BASE_URL'] = 'https://moss-front.fr/'
@@ -66,16 +66,48 @@ describe GoogleOauthCallbackController, type: :controller do
       allow(controller).to receive(:token).and_return('my-access-token')
     end
 
-    context 'No redirect_to param' do
+    context 'URL in redirect_to query param starts with front URL' do
+      let(:request_env) do
+        {
+          'omniauth.params' => {
+            'redirect_to' => 'https://moss-front.fr/ma-page-de-redirection/'
+          }
+        }
+      end
+
+      it { expect(redirect_url_allowed).to eq true }
+    end
+
+    context 'URL in redirect_to query param does not start with front URL' do
+      let(:request_env) do
+        {
+          'omniauth.params' => {
+            'redirect_to' => 'https://mon-site-de-hack.er/'
+          }
+        }
+      end
+
+      it { expect(redirect_url_allowed).to eq false }
+    end
+
+    context 'URL in redirect_to query param does not exist' do
       let(:request_env) do
         {
           'omniauth.params' => {}
         }
       end
 
-      it 'returns the URL given in redirect_to query param' do
-        expect(front_app_url).to eq 'https://moss-front.fr/#access_token=my-access-token'
-      end
+      it { expect(redirect_url_allowed).to eq false }
+    end
+  end
+
+  describe 'front_app_url_with_token' do
+    subject(:front_app_url) { controller.send(:front_app_url_with_token, request_env) }
+
+    before do
+      ENV['FRONT_BASE_URL'] = 'https://moss-front.fr/'
+
+      allow(controller).to receive(:token).and_return('my-access-token')
     end
 
     context 'URL in redirect_to query param starts with front URL' do
@@ -89,6 +121,18 @@ describe GoogleOauthCallbackController, type: :controller do
 
       it 'returns the URL given in redirect_to query param' do
         expect(front_app_url).to eq 'https://moss-front.fr/ma-page-de-redirection/#access_token=my-access-token'
+      end
+    end
+
+    context 'URL in redirect_to query param does not exist' do
+      let(:request_env) do
+        {
+          'omniauth.params' => {}
+        }
+      end
+
+      it 'returns empty string + the access token' do
+        expect(front_app_url).to eq '#access_token=my-access-token'
       end
     end
 

@@ -1,35 +1,68 @@
-# README
+Moss Back
+========
 
-## Installing
+## Introduction
 
-- [Install rvm](https://rvm.io/rvm/install)
-- Install ruby-2.7.2 : `rvm install "ruby-2.7"`
-- Install bundler : `gem install bundler`
-- Install postgres :
-    - `brew install postgres`
-    - start the postegres server just once : `pg_ctl -D /usr/local/var/postgres start` or start as a service : `brew services start postgresql`
-    - `createuser -s -r postgres`
-- Install dependencies : `bundle install`
-- Run : `rails db:create` then `rails db:migrate`
-- Create `.env` file from `.env.example` and fill the values thanks to a teammate
+Moss est l'outil de décision de la League WAM chez OCTO Technology.
 
-## Run linter
+Ce projet correspond à la partie API/back de l'application Moss, développée avec le framework Ruby on Rails.
 
-`rubocop`
+Deux applications Moss consomment cette API :
+- Une [application front-end](https://github.com/octo-wam/moss-front)
+- Une [application Android](https://github.com/octo-wam/moss-android)
 
-## Run tests
+## Installation
 
-`rspec`
+Voir [INSTALLATION.md](INSTALLATION.md).
 
-Or :
+## Démarrer le serveur local
 
-`RUBYOPT='-W0' rspec` if there are Ruby 2.7 warnings
+Pour démarrer le serveur, entrer la commande suivante :
 
-## Start server
+```shell script
+rails server
+# ou
+rails s
+```
 
-`rails s`
+Si besoin de lancer une console :
 
-## Google Auth
+```shell script
+rails console
+# ou
+rails c
+```
 
-- Login: http://localhost:3000/auth/google_oauth2
-- Callback: http://localhost:3000/auth/google_oauth2/callback
+Pour se connecter à Google et recevoir un access_token API : http://localhost:3001/auth/google_oauth2
+
+## Tests automatisés
+
+Infos plus complètes sur [CONTRIBUTING.md](CONTRIBUTING.md).
+
+Nous utilisons principalement Rspec pour les test automatisés qui sont situés dans le dossier `spec/`. Pour les lancer :
+
+```shell script
+rspec
+# ou s'il y a des erreurs dues à Ruby 2.7
+RUBYOPT='-W0' rspec
+```
+
+Nous nous appuyons également sur le linter Rubocop pour homogéniser le code style. Pour détecter des irrégularités :
+
+```shell script
+rubocop
+```
+
+Pour vérifier l'ensemble en une commande :
+
+```shell script
+rspec && rubocop
+```
+
+## Politique de Contribution
+
+Voir [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Mise en production
+
+Voir [DEPLOY.md](DEPLOY.md).

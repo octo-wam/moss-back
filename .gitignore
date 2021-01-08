@@ -10,17 +10,16 @@
 # IDE local conf
 /.idea
 
-# Ignore bundler config.
+# Ignore bundler config
 /.bundle
 
 # Ignore dotenv file
 .env
 
-# Ignore the default SQLite database.
-/db/*.sqlite3
-/db/*.sqlite3-journal
+# Ignore the database configuration file
+/config/database.yml
 
-# Ignore all logfiles and tempfiles.
+# Ignore all logfiles and tempfiles
 /log/*
 /tmp/*
 !/log/.keep
@@ -36,7 +35,7 @@
 /public/assets
 .byebug_history
 
-# Ignore master key for decrypting credentials and more.
+# Ignore master key for decrypting credentials and more
 /config/master.key
 
 *.swp
