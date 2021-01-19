@@ -26,7 +26,7 @@ class GoogleOauthCallbackController < ApplicationController
   end
 
   def front_app_url_with_token(env)
-    if env['omniauth.params']['redirect_to'].start_with? ENV['FRONT_BASE_URL']
+    if env.dig('omniauth.params', 'redirect_to')&.start_with? ENV['FRONT_BASE_URL']
       front_app_url = env['omniauth.params']['redirect_to']
     end
     front_app_url ||= ENV['FRONT_BASE_URL']
